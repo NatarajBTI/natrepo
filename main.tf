@@ -44,9 +44,7 @@ resource "null_resource" "install_verify" {
 
 provisioner "local-exec" {
     interpreter = ["/bin/bash", "-c"]
-    #working_dir = "${path.module}"
-        command     = "${path.module}/installVerify.sh"
-    #command = "oc get taskrun -A"
+    command     = "${path.module}/installVerify.sh"
 	environment = {
       KUBECONFIG = data.ibm_container_cluster_config.cluster_config.config_file_path
     }
