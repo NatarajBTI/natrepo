@@ -47,6 +47,9 @@ provisioner "local-exec" {
     #working_dir = "${path.module}"
         command     = "${path.module}/installVerify.sh"
     #command = "oc get taskrun -A"
+	environment = {
+      KUBECONFIG = data.ibm_container_cluster_config.cluster_config.config_file_path
+    }
   }
   depends_on = [time_sleep.wait_300_seconds]
 }

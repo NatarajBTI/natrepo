@@ -1,3 +1,4 @@
+#export KUBECONFIG=../kubeconfig
 varstr1=$(oc get pr -n mas-inst7-pipelines | awk -F' ' '{print $1}')
 echo $varstr1
 varstr2=$(echo $varstr1 | cut -d '-' -f 3)
