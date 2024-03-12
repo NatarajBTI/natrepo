@@ -38,8 +38,6 @@ resource "helm_release" "maximo_operator_catalog" {
 
 }
 
-
-
 resource "null_resource" "install_verify" {
 
 provisioner "local-exec" {
@@ -58,4 +56,5 @@ data "external" "maximo_admin_url" {
   query = {
     KUBECONFIG   = data.ibm_container_cluster_config.cluster_config.config_file_path
   }
+  depends_on = [null_resource.install_verify]
 }
