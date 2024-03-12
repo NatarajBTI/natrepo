@@ -44,10 +44,18 @@ resource "null_resource" "install_verify" {
 
 provisioner "local-exec" {
     interpreter = ["/bin/bash", "-c"]
-    command     = "${path.module}/installVerify.sh"
+    command     = "${path.module}/scripts/installVerify.sh"
 	environment = {
       KUBECONFIG = data.ibm_container_cluster_config.cluster_config.config_file_path
     }
   }
   depends_on = [time_sleep.wait_300_seconds]
+}
+
+data "external" "maximo_admin_url" {
+
+  program    = ["/bin/bash", "${path.module}/scripts/getAdminURL.sh"]
+  query = {
+    KUBECONFIG   = data.ibm_container_cluster_config.cluster_config.config_file_path
+  }
 }
