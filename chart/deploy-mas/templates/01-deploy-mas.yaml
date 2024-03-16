@@ -101,7 +101,6 @@ spec:
               echo "ENTITLEMENT_KEY=${ENTITLEMENT_KEY}"
               echo "SLS_LICENSE_ID=${SLS_LICENSE_ID}"
               echo "SLS_LICENSE_FILE_LOCAL=${SLS_LICENSE_FILE_LOCAL}"
-              echo "UDS_ACTION=${UDS_ACTION}"
               echo "UDS_CONTACT_EMAIL=${UDS_CONTACT_EMAIL}"
               echo "UDS_CONTACT_FIRSTNAME=${UDS_CONTACT_FIRSTNAME}"
               echo "UDS_CONTACT_LASTNAME=${UDS_CONTACT_LASTNAME}"
@@ -132,7 +131,6 @@ spec:
                   -W "${MAS_WORKSPACE_NAME}" -c "${MAS_CATALOG_VERSION}" \
                   --mas-channel "${MAS_CHANNEL}" --ibm-entitlement-key "${ENTITLEMENT_KEY}" \
                   --license-id "${SLS_LICENSE_ID}" --license-file "${SLS_LICENSE_FILE_LOCAL}" \
-                  --UDS_ACTION "${UDS_ACTION}" \
                   --uds-email "${UDS_CONTACT_EMAIL}" --uds-firstname "${UDS_CONTACT_FIRSTNAME}" \
                   --uds-lastname "${UDS_CONTACT_LASTNAME}" --storage-rwx "${STORAGE_CLASS_RWX}" \
                   --storage-pipeline "${PIPELINE_STORAGE_CLASS}" --storage-accessmode "${PIPELINE_STORAGE_ACCESSMODE}" \
@@ -145,7 +143,6 @@ spec:
                   -W "${MAS_WORKSPACE_NAME}" -c "${MAS_CATALOG_VERSION}" \
                   --mas-channel "${MAS_CHANNEL}" --ibm-entitlement-key ${ENTITLEMENT_KEY} \
                   --license-id "${SLS_LICENSE_ID}" --license-file ${SLS_LICENSE_FILE_LOCAL} \
-                  --UDS_ACTION "${UDS_ACTION}" \
                   --uds-email "${UDS_CONTACT_EMAIL}" --uds-firstname "${UDS_CONTACT_FIRSTNAME}" \
                   --uds-lastname "${UDS_CONTACT_LASTNAME}" --storage-rwx "${STORAGE_CLASS_RWX}" --storage-rwo "${STORAGE_CLASS_RWO}" \
                   --storage-pipeline "${PIPELINE_STORAGE_CLASS}" --storage-accessmode "${PIPELINE_STORAGE_ACCESSMODE}" \
@@ -179,8 +176,6 @@ spec:
 
             - name: SLS_LICENSE_ID
               value: "{{ .Values.sls_license_id }}"
-            - name: UDS_ACTION
-              value: "{{ .Values.UDS_ACTION }}"
             - name: UDS_CONTACT_EMAIL
               value: "{{ .Values.uds_contact_email }}"
             - name: UDS_CONTACT_FIRSTNAME
