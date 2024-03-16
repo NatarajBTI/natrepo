@@ -30,6 +30,7 @@ for (( i=0; i<=50; i++ ));
         done
 }
 
+sleep 60
 verifyPipelineTaskStatus inst2-install-$varstr2-gencfg-workspace
 sleep 20
 verifyPipelineTaskStatus inst2-install-$varstr2-pre-install-check
