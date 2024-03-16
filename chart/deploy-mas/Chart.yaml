@@ -1,4 +1,4 @@
-apiVersion: v2
+apiVersion: v1
 name: mas-deploy
 description: Deploy MAS Core
 type: application
