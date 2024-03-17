@@ -5,9 +5,9 @@ mas_workspace_name: wrkns4
 mas_catalog_version: v8-amd64
 mas_channel: 8.11.x
 sls_license_id: 0242ac110002
-uds_contact_email: nataraj.s@in.ibm.com
-uds_contact_firstname: Nataraj
-uds_contact_lastname: Shivashankaraiah
+uds_contact_email: replace
+uds_contact_firstname: replace
+uds_contact_lastname: replace
 storage_class_rwo: ibmc-vpc-block-retain-10iops-tier
 storage_class_rwx: ibmc-vpc-file-dp2
 pipeline_storage_class: ibmc-vpc-block-retain-10iops-tier
