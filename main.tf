@@ -26,7 +26,7 @@ resource "helm_release" "maximo_operator_catalog" {
   set {
     name  = "deployment_flavour"
     type  = "string"
-    value = base64encode(var.deployment_flavour)
+    value = var.deployment_flavour
   }
   
    name             = "maximo-operator-catalog-helm-release"
