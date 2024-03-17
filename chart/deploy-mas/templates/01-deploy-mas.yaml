@@ -13,7 +13,6 @@ metadata:
 data:
   entitlement_key: {{ .Values.mas_entitlement_key }}
   authorized_entitlement: {{ .Values.mas_license }}
-  deployment_flavour: {{ .Values.deployment_flavour }}
 type: Opaque
 
 ---
