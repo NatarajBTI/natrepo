@@ -14,6 +14,12 @@ variable "region" {
   nullable    = false
 }
 
+variable "deployment_flavor" {
+  type        = string
+  description = "Enter core for just MAS Core and enter manage for MAS Core+Manage"
+  nullable    = false
+}
+
 variable "mas_entitlement_key" {
   description = "Entitlement key to access MAS Image registry"
   type        = string
