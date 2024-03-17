@@ -6,7 +6,7 @@ varstr2=$(echo $varstr1 | cut -d '-' -f 3)
 
 # Function to track the status of each task run in the install pipeline and to exit in case of failure and to wait for 50 retries (with 180 seconds delay between each retry) in case if the task is still running.
 
-sleep 600
+sleep 120
 function verifyPipelineTaskStatus()
 {
 
