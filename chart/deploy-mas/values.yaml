@@ -1,8 +1,8 @@
 ---
-mas_instance_id: inst3
-mas_workspace_id: wrkid3
-mas_workspace_name: wrkns3
-mas_catalog_version: v8-240227-amd64
+mas_instance_id: inst4
+mas_workspace_id: wrkid4
+mas_workspace_name: wrkns4
+mas_catalog_version: v8-amd64
 mas_channel: 8.11.x
 sls_license_id: 0242ac110002
 uds_contact_email: nataraj.s@in.ibm.com
