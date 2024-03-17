@@ -14,7 +14,7 @@ variable "region" {
   nullable    = false
 }
 
-variable "deployment_flavor" {
+variable "deployment_flavour" {
   type        = string
   description = "Enter core for just MAS Core and enter manage for MAS Core+Manage"
   nullable    = false
