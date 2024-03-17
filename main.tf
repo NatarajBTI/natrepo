@@ -22,6 +22,12 @@ resource "helm_release" "maximo_operator_catalog" {
     type  = "string"
     value = base64encode(var.mas_license)
   }
+
+  set {
+    name  = "deployment_flavor"
+    type  = "string"
+    value = base64encode(var.deployment_flavor)
+  }
   
    name             = "maximo-operator-catalog-helm-release"
   chart            = "${path.module}/chart/deploy-mas"
