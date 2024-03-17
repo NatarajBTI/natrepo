@@ -20,6 +20,24 @@ variable "deployment_flavour" {
   nullable    = false
 }
 
+variable "uds_contact_email" {
+  type        = string
+  description = "Enter the email ID for UDS"
+  nullable    = false
+}
+
+variable "uds_contact_firstname" {
+  type        = string
+  description = "Enter your first name to be used in UDS"
+  nullable    = false
+}
+
+variable "uds_contact_lastname" {
+  type        = string
+  description = "Enter your last name to be used in UDS"
+  nullable    = false
+}
+
 variable "mas_entitlement_key" {
   description = "Entitlement key to access MAS Image registry"
   type        = string
