@@ -28,6 +28,24 @@ resource "helm_release" "maximo_operator_catalog" {
     type  = "string"
     value = var.deployment_flavour
   }
+
+  set {
+    name  = "uds_contact_email"
+    type  = "string"
+    value = var.uds_contact_email
+  }
+
+  set {
+    name  = "uds_contact_firstname"
+    type  = "string"
+    value = var.uds_contact_firstname
+  }
+
+  set {
+    name  = "uds_contact_lastname"
+    type  = "string"
+    value = var.uds_contact_lastname
+  }
   
    name             = "maximo-operator-catalog-helm-release"
   chart            = "${path.module}/chart/deploy-mas"
