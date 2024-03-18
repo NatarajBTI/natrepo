@@ -20,6 +20,12 @@ variable "deployment_flavour" {
   nullable    = false
 }
 
+variable "sls_license_id" {
+  type        = string
+  description = "Enter the SLS license ID"
+  nullable    = false
+}
+
 variable "uds_contact_email" {
   type        = string
   description = "Enter the email ID for UDS"
