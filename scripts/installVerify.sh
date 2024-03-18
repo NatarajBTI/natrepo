@@ -3,12 +3,6 @@ set -e
 # Function to track the status of pipeline and to exit in case of failure and to wait for 50 retries (with 180 seconds delay between each retry) in case if the pipeline is still running.
 
 #sleep 300
-var1=$1
-echo $1
-if [var1=="core"]; then
-verifyPipelineStatusCore
-elif [var1=="manage"]; then
-verifyPipelineStatusManage
 
 function verifyPipelineStatusManage()
 {
@@ -57,3 +51,10 @@ for (( i=0; i<=20; i++ ));
         fi
         done
 }
+
+var1=$1
+echo $1
+if [var1=="core"]; then
+verifyPipelineStatusCore
+elif [var1=="manage"]; then
+verifyPipelineStatusManage
