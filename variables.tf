@@ -23,6 +23,7 @@ variable "deployment_flavour" {
 variable "sls_license_id" {
   type        = string
   description = "Enter the SLS license ID"
+  sensitive   = true
   nullable    = false
 }
 
