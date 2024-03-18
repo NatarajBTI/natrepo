@@ -4,6 +4,7 @@ set -e
 
 #sleep 300
 var1=$1
+echo $1
 if [var1=="core"]; then
 verifyPipelineStatusCore
 elif [var1=="manage"]; then
