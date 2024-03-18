@@ -23,6 +23,12 @@ resource "helm_release" "maximo_operator_catalog" {
     value = base64encode(var.mas_license)
   }
 
+ set {
+    name  = "sls_license_id"
+    type  = "string"
+    value = var.sls_license_id
+  }
+
   set {
     name  = "deployment_flavour"
     type  = "string"
