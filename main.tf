@@ -72,7 +72,7 @@ resource "null_resource" "install_verify" {
 
 provisioner "local-exec" {
     interpreter = ["/bin/bash", "-c"]
-    command     = "${path.module}/scripts/installVerify.sh"
+    command     = "${path.module}/scripts/installVerify.sh var.deployment_flavour"
 	environment = {
       KUBECONFIG = data.ibm_container_cluster_config.cluster_config.config_file_path
     }
