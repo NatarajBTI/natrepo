@@ -40,6 +40,18 @@ resource "helm_release" "maximo_operator_catalog" {
     type  = "string"
     value = var.mas_instance_id
   }
+
+  set {
+    name  = "mas_workspace_id"
+    type  = "string"
+    value = var.mas_workspace_id
+  }
+
+  set {
+    name  = "mas_workspace_name"
+    type  = "string"
+    value = var.mas_workspace_name
+  }
 	
   set {
     name  = "uds_contact_email"
@@ -88,7 +100,7 @@ provisioner "local-exec" {
 
 data "external" "maximo_admin_url" {
 
-  program    = ["/bin/bash", "${path.module}/scripts/getAdminURL.sh ${var.deployment_flavour} ${var.mas_instance_id}"]
+  program    = ["/bin/bash", "${path.module}/scripts/getAdminURL.sh ${var.deployment_flavour} ${var.mas_instance_id} ${mas_workspace_id}"]
   query = {
     KUBECONFIG   = data.ibm_container_cluster_config.cluster_config.config_file_path
   }
