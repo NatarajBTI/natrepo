@@ -78,7 +78,7 @@ resource "null_resource" "install_verify" {
 
 provisioner "local-exec" {
     interpreter = ["/bin/bash", "-c"]
-    command     = "${path.module}/scripts/installVerify.sh var.deployment_flavour var.mas_instance_id"
+    command     = "${path.module}/scripts/installVerify.sh ${var.deployment_flavour} ${var.mas_instance_id}"
 	environment = {
       KUBECONFIG = data.ibm_container_cluster_config.cluster_config.config_file_path
     }
@@ -88,7 +88,7 @@ provisioner "local-exec" {
 
 data "external" "maximo_admin_url" {
 
-  program    = ["/bin/bash", "${path.module}/scripts/getAdminURL.sh var.deployment_flavour var.mas_instance_id"]
+  program    = ["/bin/bash", "${path.module}/scripts/getAdminURL.sh ${var.deployment_flavour} ${var.mas_instance_id}"]
   query = {
     KUBECONFIG   = data.ibm_container_cluster_config.cluster_config.config_file_path
   }
