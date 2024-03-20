@@ -7,7 +7,7 @@ sleep 100
 function verifyPipelineStatusManage()
 {
 
-for (( i=0; i<=50; i++ ));
+for (( i=0; i<=60; i++ ));
         do
                 varstr3=$(oc get pr -n mas-${var2}-pipelines | awk -F' ' '{print $3}')
         varstr3=$(echo $varstr3 | cut -d ' ' -f 1)
@@ -20,7 +20,7 @@ for (( i=0; i<=50; i++ ));
                 break
         elif [[ $varstr3 == "REASON" && $varstr4 == "Running"  ]]; then
                 echo "Pipeline run is still running"
-                sleep 180
+                sleep 300
         else
                 echo "Pipeline run failed"
                         exit 1
@@ -31,7 +31,7 @@ for (( i=0; i<=50; i++ ));
 function verifyPipelineStatusCore()
 {
 
-for (( i=0; i<=20; i++ ));
+for (( i=0; i<=30; i++ ));
         do
                 varstr3=$(oc get pr -n mas-${var2}-pipelines | awk -F' ' '{print $3}')
         varstr3=$(echo $varstr3 | cut -d ' ' -f 1)
