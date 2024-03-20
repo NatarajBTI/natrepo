@@ -2,7 +2,7 @@ set -e
 
 # Function to track the status of pipeline and to exit in case of failure and to wait for 50 retries (with 180 seconds delay between each retry) in case if the pipeline is still running.
 
-sleep 100
+sleep 300
 
 function verifyPipelineStatusManage()
 {
