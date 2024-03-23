@@ -86,16 +86,13 @@ resource "helm_release" "maximo_operator_catalog" {
 
 }
 
-resource "null_resource" "install_verify" {
+data "external" "install_verify" {
 
-provisioner "local-exec" {
-    interpreter = ["/bin/bash", "-c"]
-    command     = "${path.module}/scripts/installVerify.sh ${var.deployment_flavour} ${var.mas_instance_id}"
-	environment = {
-      KUBECONFIG = data.ibm_container_cluster_config.cluster_config.config_file_path
-    }
+  program    = ["/bin/bash", "-c", "${path.module}/scripts/installVerify.sh ${var.deployment_flavour} ${var.mas_instance_id}"]
+  query = {
+    KUBECONFIG   = data.ibm_container_cluster_config.cluster_config.config_file_path
   }
-  depends_on = [time_sleep.wait_300_seconds]
+  depends_on = [null_resource.install_verify]
 }
 
 data "external" "maximo_admin_url" {
@@ -104,5 +101,5 @@ data "external" "maximo_admin_url" {
   query = {
     KUBECONFIG   = data.ibm_container_cluster_config.cluster_config.config_file_path
   }
-  depends_on = [null_resource.install_verify]
+  depends_on = [external.install_verify]
 }
