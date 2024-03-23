@@ -56,9 +56,9 @@ var2=$2
 echo "Deployment flavour is:" $1
 echo "Instance Id is:" $2
 
-if [[ $var1=="core" ]]; then
+if [[ $var1 == "core" ]]; then
 verifyPipelineStatusCore
-elif [[ $var1=="manage" ]]; then
+elif [[ $var1 == "manage" ]]; then
 verifyPipelineStatusManage
 else
 echo "Invalid deployment flavour option is inputted"
