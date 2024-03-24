@@ -15,7 +15,7 @@ for (( i=0; i<=60; i++ ));
         varstr4=$(oc get pr -n mas-${var2}-pipelines | awk -F' ' '{print $3}')
         varstr4=$(echo $varstr4 | cut -d ' ' -f 2)
 
-        if [[ $varstr3 == "REASON" && $varstr4 == "Succeeded"  ]]; then
+        if [[ $varstr3 == "REASON" && $varstr4 == "Completed"  ]]; then
                 echo "Pipeline run is successful"
                 break
         elif [[ $varstr3 == "REASON" && $varstr4 == "Running"  ]]; then
@@ -39,7 +39,7 @@ for (( i=0; i<=30; i++ ));
         varstr4=$(oc get pr -n mas-${var2}-pipelines | awk -F' ' '{print $3}')
         varstr4=$(echo $varstr4 | cut -d ' ' -f 2)
 
-        if [[ $varstr3 == "REASON" && $varstr4 == "Succeeded"  ]]; then
+        if [[ $varstr3 == "REASON" && $varstr4 == "Completed"  ]]; then
                 echo "Pipeline run is successful"
                 break
         elif [[ $varstr3 == "REASON" && $varstr4 == "Running"  ]]; then
