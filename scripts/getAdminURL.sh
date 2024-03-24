@@ -23,4 +23,3 @@ getAdminURLCore
 elif [[ $var1 == "manage" ]]; then
 getAdminURLManage
 fi
-
