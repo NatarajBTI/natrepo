@@ -16,13 +16,13 @@ for (( i=0; i<=60; i++ ));
         varstr4=$(echo $varstr4 | cut -d ' ' -f 2)
 
         if [[ $varstr3 == "REASON" && $varstr4 == "Completed"  ]]; then
-                echo "Pipeline run is successful"
+                echo "Install pipeline as completed successfully"
                 break
         elif [[ $varstr3 == "REASON" && $varstr4 == "Running"  ]]; then
-                echo "Pipeline run is still running"
+                echo "Install pipeline is still running"
                 sleep 300
         else
-                echo "Pipeline run failed"
+                echo "Install pipeline failed"
                         exit 1
         fi
         done
@@ -40,13 +40,13 @@ for (( i=0; i<=30; i++ ));
         varstr4=$(echo $varstr4 | cut -d ' ' -f 2)
 
         if [[ $varstr3 == "REASON" && $varstr4 == "Completed"  ]]; then
-                echo "Pipeline run is successful"
+                echo "Install pipeline as completed successfully"
                 break
         elif [[ $varstr3 == "REASON" && $varstr4 == "Running"  ]]; then
-                echo "Pipeline run is still running"
+                echo "Install pipeline is still running"
                 sleep 180
         else
-                echo "Pipeline run failed"
+                echo "Install pipeline failed"
                         exit 1
         fi
         done
@@ -62,4 +62,5 @@ elif [[ $var1 == "manage" ]]; then
 verifyPipelineStatusManage
 else
 echo "Invalid deployment flavour option is inputted"
+exit 1
 fi
