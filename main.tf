@@ -98,6 +98,15 @@ provisioner "local-exec" {
   depends_on = [time_sleep.wait_300_seconds]
 }
 
+data "external" "get_pipeline_result" {
+
+  program    = ["/bin/bash", "-c", "${path.module}/scripts/getResult.sh"]
+  query = {
+    KUBECONFIG   = data.ibm_container_cluster_config.cluster_config.config_file_path
+  }
+depends_on = [null_resource.install_verify]
+}
+
 data "external" "maximo_admin_url" {
 
   program    = ["/bin/bash", "-c", "${path.module}/scripts/getAdminURL.sh ${var.deployment_flavour} ${var.mas_instance_id} ${var.mas_workspace_id}"]
