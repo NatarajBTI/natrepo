@@ -121,7 +121,7 @@ depends_on = [null_resource.install_verify]
 
 data "external" "get_admin_url" {
 
-  program    = ["/bin/bash", "-c", "${path.module}/scripts/getAdminURL.sh"]
+  program    = ["/bin/bash", "-c", "${path.module}/scripts/getURL.sh"]
   query = {
     KUBECONFIG   = data.ibm_container_cluster_config.cluster_config.config_file_path
   }
