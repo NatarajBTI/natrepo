@@ -1,12 +1,10 @@
 set -e
 
-# Function to track the status of pipeline and to exit in case of failure and to wait for 50 retries (with 180 seconds delay between each retry) in case if the pipeline is still running.
-
 sleep 300
 
+# Function to track the status of MAS Core+Manage pipeline and to exit in case of failure and to wait for all retries in case if the pipeline is still running.
 function verifyPipelineStatusManage()
 {
-
 for (( i=0; i<=60; i++ ));
         do
                 varstr3=$(oc get pr -n mas-${var2}-pipelines | awk -F' ' '{print $3}')
@@ -33,9 +31,9 @@ for (( i=0; i<=60; i++ ));
         done
 }
 
+# Function to track the status of MAS Core pipeline and to exit in case of failure and to wait for all retries in case if the pipeline is still running.
 function verifyPipelineStatusCore()
 {
-
 for (( i=0; i<=30; i++ ));
         do
                 varstr3=$(oc get pr -n mas-${var2}-pipelines | awk -F' ' '{print $3}')
