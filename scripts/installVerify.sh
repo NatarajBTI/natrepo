@@ -21,9 +21,10 @@ for (( i=0; i<=60; i++ ));
         elif [[ $varstr3 == "REASON" && $varstr4 == "Running"  ]]; then
                 echo "Install pipeline is still running"
                 sleep 300
-        else
-                echo "Install pipeline failed"
-                        exit 1
+        elif [[ $varstr3 == "REASON" && $varstr4 == "Failed"  ]]; then
+        varstr5=$(oc get taskrun -A -n mas-${var2}-pipelines | grep Failed | awk -F' ' '{print $2}')
+                echo $varstr5 "task run failed"
+                exit 1
         fi
         done
 }
@@ -45,9 +46,10 @@ for (( i=0; i<=30; i++ ));
         elif [[ $varstr3 == "REASON" && $varstr4 == "Running"  ]]; then
                 echo "Install pipeline is still running"
                 sleep 180
-        else
-                echo "Install pipeline failed"
-                        exit 1
+        elif [[ $varstr3 == "REASON" && $varstr4 == "Failed"  ]]; then
+        varstr5=$(oc get taskrun -A -n mas-${var2}-pipelines | grep Failed | awk -F' ' '{print $2}')
+                echo $varstr5 "task run failed"
+                exit 1
         fi
         done
 }
