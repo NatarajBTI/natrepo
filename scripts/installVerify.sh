@@ -17,6 +17,8 @@ for (( i=0; i<=60; i++ ));
 
         if [[ $varstr3 == "REASON" && $varstr4 == "Completed"  ]]; then
                 echo "Install pipeline as completed successfully"
+                echo -n '{"PipelineRunStatus":"'"Successful"'"}' > result.txt
+                chmod +x result.txt
                 break
         elif [[ $varstr3 == "REASON" && $varstr4 == "Running"  ]]; then
                 echo "Install pipeline is still running"
@@ -24,7 +26,7 @@ for (( i=0; i<=60; i++ ));
         elif [[ $varstr3 == "REASON" && $varstr4 == "Failed"  ]]; then
         varstr5=$(oc get taskrun -A -n mas-${var2}-pipelines | grep Failed | awk -F' ' '{print $2}')
                 echo $varstr5 "task run failed"
-                exit 1
+                break
         fi
         done
 }
@@ -42,6 +44,8 @@ for (( i=0; i<=30; i++ ));
 
         if [[ $varstr3 == "REASON" && $varstr4 == "Completed"  ]]; then
                 echo "Install pipeline as completed successfully"
+                echo -n '{"PipelineRunStatus":"'"Successful"'"}' > result.txt
+                chmod +x result.txt
                 break
         elif [[ $varstr3 == "REASON" && $varstr4 == "Running"  ]]; then
                 echo "Install pipeline is still running"
@@ -49,7 +53,10 @@ for (( i=0; i<=30; i++ ));
         elif [[ $varstr3 == "REASON" && $varstr4 == "Failed"  ]]; then
         varstr5=$(oc get taskrun -A -n mas-${var2}-pipelines | grep Failed | awk -F' ' '{print $2}')
                 echo $varstr5 "task run failed"
-                exit 1
+                varstr6=$varstr5"_failed"
+                echo -n '{"PipelineRunStatus":"'"${varstr6}"'"}' > result.txt
+                chmod +x result.txt
+                break
         fi
         done
 }
