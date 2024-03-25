@@ -26,8 +26,6 @@ for (( i=0; i<=60; i++ ));
                 echo $varstr5 "task run failed"
                 break
         fi
-        echo "Pipeline execution is taking longer than expected time. Hence exiting"
-        exit 1
         done
 }
 
@@ -57,9 +55,7 @@ for (( i=0; i<=30; i++ ));
                 echo -n '{"PipelineRunStatus":"'"${varstr6}"'"}' > result.txt
                 chmod +x result.txt
                 break
-        fi
-        echo "Pipeline execution is taking longer than expected time. Hence exiting"
-        exit 1
+        fi        
         done
 }
 var1=$1
