@@ -7,7 +7,7 @@ function verifyPipelineStatusManage()
 {
 for (( i=0; i<=60; i++ ));
         do
-                varstr3=$(oc get pr -n mas-${var2}-pipelines | awk -F' ' '{print $3}')
+        varstr3=$(oc get pr -n mas-${var2}-pipelines | awk -F' ' '{print $3}')
         varstr3=$(echo $varstr3 | cut -d ' ' -f 1)
 
         varstr4=$(oc get pr -n mas-${var2}-pipelines | awk -F' ' '{print $3}')
@@ -34,7 +34,7 @@ function verifyPipelineStatusCore()
 {
 for (( i=0; i<=30; i++ ));
         do
-                varstr3=$(oc get pr -n mas-${var2}-pipelines | awk -F' ' '{print $3}')
+        varstr3=$(oc get pr -n mas-${var2}-pipelines | awk -F' ' '{print $3}')
         varstr3=$(echo $varstr3 | cut -d ' ' -f 1)
 
         varstr4=$(oc get pr -n mas-${var2}-pipelines | awk -F' ' '{print $3}')
