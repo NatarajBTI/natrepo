@@ -8,6 +8,12 @@ variable "ibmcloud_api_key" {
   sensitive   = true
 }
 
+variable "region" {
+  description = "Cluster region"
+  type        = string
+  nullable    = false
+}
+
 variable "mas_instance_id" {
   type        = string
   description = "Enter the MAS instance Id"
