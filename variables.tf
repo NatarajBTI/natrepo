@@ -20,6 +20,13 @@ variable "mas_instance_id" {
   nullable    = false
 }
 
+variable "mas_workspace_id" {
+  type        = string
+  description = "Enter the workspace Id"
+  nullable    = false
+}
+
+
 variable "deployment_flavour" {
   type        = string
   description = "Enter core for just MAS Core and enter manage for MAS Core+Manage"
