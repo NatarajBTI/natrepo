@@ -4,5 +4,5 @@
 
 output "maximo_admin_url" {
   description = "Admin URL of Manage application is"
-  value       = data.external.maximo_admin_url.result.admin_url
+  value       = jsonencode(data.external.maximo_admin_url.result.admin_url)
 }
