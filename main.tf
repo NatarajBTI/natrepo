@@ -6,7 +6,7 @@ data "ibm_container_cluster_config" "cluster_config" {
 
 data "external" "maximo_admin_url" {
 
-  program    = ["/bin/sh", "-c", "${path.module}/scripts/getAdminURL.sh ${var.deployment_flavour} ${var.mas_instance_id}"]
+  program    = ["python3", "${path.module}/scripts/test.py"]
   query = {
     KUBECONFIG   = data.ibm_container_cluster_config.cluster_config.config_file_path
   }
