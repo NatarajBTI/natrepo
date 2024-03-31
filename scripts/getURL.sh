@@ -1,1 +1,2 @@
-echo "$(<url.txt )"
+#echo "$(<url.txt )"
+jq '.' url.txt
