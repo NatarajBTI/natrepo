@@ -1,5 +1,9 @@
 import json
+import os
 
-str1 = "https://admin.natinst2.masda302-workload-cluster-6f1620198115433da1cac8216c06779b-0000.eu-gb.containers.appdomain.cloud"
+def getAdminURLCore(dep_flavor, instid, wrksid):
+    varstr = os.popen('oc get route -n mas-' + instid + '-core --no-headers | grep admin.' + instid + ' | awk \'{print $2}\'').read().strip()
+    url = "https://" + varstr
+    print(url)
 
-print(json.dumps({ 'admin_url': str1 }, ensure_ascii=False))
+getAdminURLCore(dep_flavor = "core", instid = "natinst2", wrksid = "wrkid2")
