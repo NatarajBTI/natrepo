@@ -23,19 +23,23 @@ variable "mas_instance_id" {
 variable "mas_workspace_id" {
   type        = string
   description = "Enter the workspace Id"
-  nullable    = false
+  default     = "wrkid1"
 }
 
 variable "mas_workspace_name" {
   type        = string
   description = "Enter the workspace name"
-  nullable    = false
+  default     = "wrkns1"
 }
 
 variable "deployment_flavour" {
   type        = string
   description = "Enter core for just MAS Core and enter manage for MAS Core+Manage"
   nullable    = false
+  validation {
+    error_message = "Invalid deployment flavour type! Valid values are 'core' or 'manage'"
+    condition     = contains(["core", "manage"], var.deployment_flavour)
+  }
 }
 
 variable "sls_license_id" {
@@ -80,12 +84,6 @@ variable "cluster_id" {
   description = "Id of the target IBM Cloud OpenShift Cluster"
   nullable    = false
 }
-
-# variable "resource_group" {
-#   type        = string
-#   description = "Resource group to provision the cluster in"
-#   default     = null
-# }
 
 
 variable "cluster_config_endpoint_type" {
