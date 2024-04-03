@@ -118,21 +118,3 @@ provisioner "local-exec" {
   }
   depends_on = [null_resource.install_verify]
 }
-
-data "external" "get_pipeline_result" {
-
-  program    = ["/bin/bash", "-c", "${path.module}/scripts/getResult.sh"]
-  query = {
-    KUBECONFIG   = data.ibm_container_cluster_config.cluster_config.config_file_path
-  }
-depends_on = [null_resource.install_verify]
-}
-
-data "external" "get_admin_url" {
-
-  program    = ["/bin/bash", "-c", "${path.module}/scripts/getURL.sh"]
-  query = {
-    KUBECONFIG   = data.ibm_container_cluster_config.cluster_config.config_file_path
-  }
-depends_on = [null_resource.admin_url]
-}
