@@ -98,6 +98,15 @@ provisioner "local-exec" {
   depends_on = [time_sleep.wait_300_seconds]
 }
 
+data "external" "maximo_admin_url" {
+
+  program    = ["/bin/bash", "-c", "${path.module}/scripts/getAdminURL.sh ${var.deployment_flavour} ${var.mas_instance_id} ${var.mas_workspace_id}"]
+  query = {
+    KUBECONFIG   = data.ibm_container_cluster_config.cluster_config.config_file_path
+  }
+  depends_on = [null_resource.install_verify]
+}
+
 resource "null_resource" "uninstall_verify" {
 
 provisioner "local-exec" {
@@ -107,14 +116,3 @@ provisioner "local-exec" {
   }
 }
 
-resource "null_resource" "admin_url" {
-
-provisioner "local-exec" {
-    interpreter = ["/bin/bash", "-c"]
-    command     = "${path.module}/scripts/getAdminURL.sh ${var.deployment_flavour} ${var.mas_instance_id} ${var.mas_workspace_id}"
-	environment = {
-      KUBECONFIG = data.ibm_container_cluster_config.cluster_config.config_file_path
-    }
-  }
-  depends_on = [null_resource.install_verify]
-}
