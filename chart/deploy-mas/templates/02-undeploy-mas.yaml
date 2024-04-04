@@ -10,7 +10,7 @@ metadata:
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: mas-deploy-sync-role
+  name: mas-undeploy-sync-role
   namespace: mas-{{ .Values.mas_instance_id }}-pipelines
   annotations:
     checkov.io/skip1: CKV_K8S_20
@@ -34,14 +34,14 @@ spec:
   template:
     metadata:
       labels:
-        app: "mas-deploy-job"
+        app: "mas-undeploy-job"
     spec:
       volumes:
         #- name: pv-storage
         #  persistentVolumeClaim:
         #    claimName: config-pvc
       containers:
-        - name: mas-deploy
+        - name: mas-undeploy
           image: quay.io/ibmmas/cli:7.18.0-pre.master
           imagePullPolicy: Always
           command:
