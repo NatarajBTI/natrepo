@@ -107,12 +107,12 @@ data "external" "maximo_admin_url" {
   depends_on = [null_resource.install_verify]
 }
 
-resource "null_resource" "uninstall_verify" {
+resource "null_resource" "uninstall_maximo" {
 
 provisioner "local-exec" {
         when    = destroy
     interpreter = ["/bin/bash", "-c"]
-    command     = "helm install  mas-deploy-v1 ./undeploy-mas --create-namespace"
+    command     = "helm install  mas-deploy-v1 ./undeploy-mas"
   }
 }
 
