@@ -16,14 +16,3 @@ provisioner "local-exec" {
   }
 }
 
-resource "null_resource" "uninstall_maximo" {
-
-provisioner "local-exec" {
-        when    = destroy
-    interpreter = ["/bin/bash", "-c"]
-    command     = "helm install  mas-deploy-v1 ./undeploy-mas"
-	
-  }
-  
-}
-
