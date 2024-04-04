@@ -14,7 +14,6 @@ provisioner "local-exec" {
       KUBECONFIG = data.ibm_container_cluster_config.cluster_config.config_file_path
     }
   }
-  depends_on = [time_sleep.wait_300_seconds]
 }
 
 resource "null_resource" "uninstall_maximo" {
