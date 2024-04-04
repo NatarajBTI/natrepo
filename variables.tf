@@ -13,7 +13,12 @@ variable "region" {
   type        = string
   nullable    = false
 }
-
+variable "deployment_flavour" {
+  type        = string
+  description = "Enter core for just MAS Core and enter manage for MAS Core+Manage"
+  nullable    = false
+  default     = "core"
+}
 variable "mas_instance_id" {
   type        = string
   description = "Enter the MAS instance Id"
