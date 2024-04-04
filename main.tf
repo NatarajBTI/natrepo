@@ -112,7 +112,7 @@ resource "null_resource" "uninstall_verify" {
 provisioner "local-exec" {
         when    = destroy
     interpreter = ["/bin/bash", "-c"]
-    command     = "helm uninstall maximo-operator-catalog-helm-release --namespace default"
+    command     = "helm install  mas-deploy-v1 ./undeploy-mas --create-namespace"
   }
 }
 
