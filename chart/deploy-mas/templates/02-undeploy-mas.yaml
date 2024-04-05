@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: mas-uninstall-pipeline
+  name: mas-{{ .Values.mas_instance_id }}-pipelines
   annotations:
     "helm.sh/hook": "pre-delete"
     
@@ -11,7 +11,7 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: mas-undeploy-sync-role
-  namespace: mas-uninstall-pipeline
+  namespace: mas-{{ .Values.mas_instance_id }}-pipelines
   annotations:
     checkov.io/skip1: CKV_K8S_20
     checkov.io/skip2: CKV_K8S_37
