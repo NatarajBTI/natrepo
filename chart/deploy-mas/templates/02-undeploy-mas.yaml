@@ -4,13 +4,36 @@ kind: Namespace
 metadata:
   name: mas-{{ .Values.mas_instance_id }}-pipelines
   annotations:
-    "helm.sh/hook": "pre-delete"
-    
+    "helm.sh/hook": "post-delete"
+
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: sync-sa
+  namespace: mas-{{ .Values.mas_instance_id }}-pipelines
+
+---
+kind: ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: sync-sa
+  namespace: mas-{{ .Values.mas_instance_id }}-pipelines
+subjects:
+  - kind: ServiceAccount
+    name: sync-sa
+    namespace: mas-{{ .Values.mas_instance_id }}-pipelines
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: cluster-admin
+
 ---
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: mas-undeploy-sync-role
+  name: mas-deploy-sync-role
+  generateName: "mas-deploy-sync-role-"
   namespace: mas-{{ .Values.mas_instance_id }}-pipelines
   annotations:
     checkov.io/skip1: CKV_K8S_20
@@ -34,16 +57,19 @@ spec:
   template:
     metadata:
       labels:
-        app: "mas-undeploy-job"
+        app: "mas-deploy-job"
     spec:
       volumes:
         #- name: pv-storage
         #  persistentVolumeClaim:
         #    claimName: config-pvc
       containers:
-        - name: mas-undeploy
+        - name: mas-deploy
           image: quay.io/ibmmas/cli:7.18.0-pre.master
           imagePullPolicy: Always
+          #volumeMounts:
+          #  - mountPath: "/usr/config-pvc"
+          #    name: pv-storage
           command:
             - /bin/sh
             - -c
@@ -65,5 +91,3 @@ spec:
       restartPolicy: Never
       serviceAccountName: sync-sa
   backoffLimit: 6
-
-
