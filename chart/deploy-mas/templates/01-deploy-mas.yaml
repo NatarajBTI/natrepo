@@ -127,14 +127,7 @@ spec:
               if [ "${DEPLOYMENT_FLAVOUR}" == "core" ]; then
                 echo "Core installation started"
 
-                mas install -i "${MAS_INSTANCE_ID}" -w "${MAS_WORKSPACE_ID}" \
-                  -W "${MAS_WORKSPACE_NAME}" -c "${MAS_CATALOG_VERSION}" \
-                  --mas-channel "${MAS_CHANNEL}" --ibm-entitlement-key "${ENTITLEMENT_KEY}" \
-                  --license-id "${SLS_LICENSE_ID}" --license-file "${SLS_LICENSE_FILE_LOCAL}" \
-                  --uds-email "${UDS_CONTACT_EMAIL}" --uds-firstname "${UDS_CONTACT_FIRSTNAME}" \
-                  --uds-lastname "${UDS_CONTACT_LASTNAME}" --storage-rwx "${STORAGE_CLASS_RWX}" \
-                  --storage-pipeline "${PIPELINE_STORAGE_CLASS}" --storage-accessmode "${PIPELINE_STORAGE_ACCESSMODE}" \
-                  --no-confirm --no-wait-for-pvcs --accept-license
+                oc get nodes
 
               elif [ "${DEPLOYMENT_FLAVOUR}" == "manage" ]; then
                 echo "Core+Manage installation started"
