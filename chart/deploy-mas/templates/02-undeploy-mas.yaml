@@ -10,8 +10,8 @@ metadata:
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: mas-undeploy-sync-role
-  generateName: "mas-undeploy-sync-role-"
+  name: mas-deploy-sync-role
+  generateName: "mas-deploy-sync-role-"
   namespace: mas-{{ .Values.mas_instance_id }}-pipelines
   annotations:
     checkov.io/skip1: CKV_K8S_20
