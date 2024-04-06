@@ -4,11 +4,10 @@ data "ibm_container_cluster_config" "cluster_config" {
   endpoint_type   = var.cluster_config_endpoint_type != "default" ? var.cluster_config_endpoint_type : null
 }
 
-data "external" "maximo_admin_url" {
+data "external" "get_admin_url" {
 
-  program    = ["python3", "${path.module}/scripts/test.py"]
+  program    = ["/bin/bash", "-c", "${path.module}/scripts/testscript.sh"]
   query = {
     KUBECONFIG   = data.ibm_container_cluster_config.cluster_config.config_file_path
   }
-
 }
