@@ -2,7 +2,7 @@
 mas_instance_id:
 mas_workspace_id:
 mas_workspace_name:
-mas_catalog_version: v8-240227-amd64
+mas_catalog_version: v8-240326-amd64
 mas_channel: 8.11.x
 sls_license_id: replace
 uds_contact_email: replace
