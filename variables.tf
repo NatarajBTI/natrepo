@@ -22,6 +22,14 @@ variable "mas_instance_id" {
   default     = "natinst3"
 }
 
+variable "mas_workspace_id" {
+  type        = string
+  description = "Enter the MAS instance Id"
+  nullable    = false
+  default     = "wrkid3"
+}
+
+
 variable "deployment_flavour" {
   type        = string
   description = "Enter core for just MAS Core and enter manage for MAS Core+Manage"
