@@ -9,4 +9,4 @@ def getAdminURLCore(dep_flavor, instid, wrksid):
     #print(json.dumps(json_object))
     print(json.dumps(json_object, sort_keys=True, indent=4, separators=(',', ': ')))
 
-getAdminURLCore(dep_flavor="core", instid="natinst2", wrksid="wrkid2")
+getAdminURLCore(dep_flavor="core", instid="natinst3", wrksid="wrkid3")
