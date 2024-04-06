@@ -3,8 +3,11 @@ set -e
 function getAdminURLCore()
 {
 varstr=$(oc get route -n mas-${var2}-core --no-headers | grep admin.${var2} | awk '{print $2}')
-#varstr2="https://"$varstr""
-echo -n '{"admin_url":"'"${varstr}"'"}'
+varstr2="https://"$varstr""
+#echo -n '{"admin_url":"'"${varstr}"'"}'
+jq -n \
+  --arg SERVER_URL "${varstr2}" \
+  '{"admin_url": $SERVER_URL}'
 }
 
 function getAdminURLManage()
