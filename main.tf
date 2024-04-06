@@ -98,7 +98,6 @@ provisioner "local-exec" {
   depends_on = [time_sleep.wait_300_seconds]
 }
 
-
 resource "null_resource" "admin_url" {
 
 provisioner "local-exec" {
