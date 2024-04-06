@@ -6,7 +6,7 @@ varstr=$(oc get route -n mas-${var2}-core --no-headers | grep admin.${var2} | aw
 varstr2="https://"$varstr""
 #echo -n '{"admin_url":"'"${varstr}"'"}'
 jq -n \
-  --arg SERVER_URL "${varstr2}" \
+  --arg SERVER_URL "${varstr}" \
   '{"admin_url": $SERVER_URL}'
 }
 
