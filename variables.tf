@@ -12,24 +12,28 @@ variable "region" {
   description = "Cluster region"
   type        = string
   nullable    = false
+  default     = "eu-de"
 }
 
 variable "mas_instance_id" {
   type        = string
   description = "Enter the MAS instance Id"
   nullable    = false
+  default     = "natinst3"
 }
 
 variable "deployment_flavour" {
   type        = string
   description = "Enter core for just MAS Core and enter manage for MAS Core+Manage"
   nullable    = false
+  default     = "core"
 }
 
 variable "cluster_id" {
   type        = string
   description = "Id of the target IBM Cloud OpenShift Cluster"
   nullable    = false
+  default     = "masdaub05-workload-cluster"
 }
 
 variable "cluster_config_endpoint_type" {
