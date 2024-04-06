@@ -6,6 +6,7 @@ def getAdminURLCore(dep_flavor, instid, wrksid):
     url = "https://" + varstr
     json_object = { 'admin_url': varstr }
     json_data = json.dumps(json_object)
-    print(json_data)
+    
+    print(json.dumps(json_data))
 
 getAdminURLCore(dep_flavor="core", instid="natinst3", wrksid="wrkid3")
