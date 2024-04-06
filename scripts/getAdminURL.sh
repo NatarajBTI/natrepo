@@ -4,7 +4,7 @@ function getAdminURLCore()
 {
 varstr=$(oc get route -n mas-${var2}-core --no-headers | grep admin.${var2} | awk '{print $2}')
 varstr2="https://"$varstr""
-echo -n '"admin_url":"'"${varstr2}"'"'
+echo -n '{"admin_url":"'"${varstr2}"'"}'
 }
 
 function getAdminURLManage()
