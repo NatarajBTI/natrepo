@@ -98,14 +98,6 @@ provisioner "local-exec" {
   depends_on = [time_sleep.wait_300_seconds]
 }
 
-resource "null_resource" "uninstall_verify" {
-
-provisioner "local-exec" {
-        when    = destroy
-    interpreter = ["/bin/bash", "-c"]
-    command     = "helm uninstall maximo-operator-catalog-helm-release --namespace default"
-  }
-}
 
 resource "null_resource" "admin_url" {
 
