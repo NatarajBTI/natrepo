@@ -6,10 +6,10 @@ data "ibm_container_cluster_config" "cluster_config" {
 
 resource "time_sleep" "wait_300_seconds" {
   create_duration = "100s"
-  depends_on = [helm_release.maximo_operator_catalog]
+  depends_on = [helm_release.maximo_deploy]
 }
 
-resource "helm_release" "maximo_operator_catalog" {
+resource "helm_release" "maximo_deploy" {
 
   set {
     name  = "mas_entitlement_key"
