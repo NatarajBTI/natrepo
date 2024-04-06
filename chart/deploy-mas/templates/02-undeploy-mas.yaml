@@ -12,6 +12,7 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: mas-undeploy-sync-role
+  generateName: "mas-undeploy-sync-role-"
   namespace: mas-uninstall-pipelines
   annotations:
     checkov.io/skip1: CKV_K8S_20
@@ -35,14 +36,14 @@ spec:
   template:
     metadata:
       labels:
-        app: "mas-deploy-job"
+        app: "mas-undeploy-job"
     spec:
       volumes:
         #- name: pv-storage
         #  persistentVolumeClaim:
         #    claimName: config-pvc
       containers:
-        - name: mas-deploy
+        - name: mas-undeploy
           image: quay.io/ibmmas/cli:7.18.0-pre.master
           imagePullPolicy: Always
           #volumeMounts:
@@ -53,18 +54,22 @@ spec:
             - -c
             - |
 
-
               set -e
-
+              
               echo "MAS_INSTANCE_ID=${MAS_INSTANCE_ID}"
+              
+              echo "DEPLOYMENT_FLAVOUR=${DEPLOYMENT_FLAVOUR}"
+              DEPLOYMENT_FLAVOUR=${DEPLOYMENT_FLAVOUR:-"core"}
+              
+                echo "Core uninstallation started"
 
-                echo "Uninstallation started"
-
-                mas uninstall -i "${MAS_INSTANCE_ID}" --no-confirm
+                oc get pods
 
           env:
             - name: MAS_INSTANCE_ID
               value: "{{ .Values.mas_instance_id }}"
+            - name: DEPLOYMENT_FLAVOUR
+              value: "{{ .Values.deployment_flavour }}"
 
       restartPolicy: Never
       serviceAccountName: sync-sa
