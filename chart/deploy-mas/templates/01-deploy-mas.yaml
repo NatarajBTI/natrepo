@@ -74,7 +74,7 @@ spec:
         #    claimName: config-pvc
       containers:
         - name: mas-deploy
-          image: quay.io/ibmmas/cli:7.18.0-pre.master
+          image: quay.io/ibmmas/cli:7.19.0-pre.mas-uninstall-fixes
           imagePullPolicy: Always
           #volumeMounts:
           #  - mountPath: "/usr/config-pvc"
@@ -155,6 +155,11 @@ spec:
                   --db2u-logs-storage "${DB2U_LOGS_STORAGE}" --db2u-meta-storage "${DB2U_META_STORAGE}" \
                   --db2u-temp-storage "${DB2U_TEMP_STORAGE}" \
                   --no-confirm --no-wait-for-pvcs --accept-license
+                
+                elif [ "${DEPLOYMENT_FLAVOUR}" == "uninst" ]; then
+                  echo "Core+Manage installation started"
+
+                mas uninstall -i "${MAS_INSTANCE_ID}" --no-confirm
 
               else
                 echo "Passed DEPLOYMENT_FLAVOUR not supported, Supported values = core, mange"
