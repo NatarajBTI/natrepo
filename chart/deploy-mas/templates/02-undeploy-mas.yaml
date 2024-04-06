@@ -5,6 +5,7 @@ metadata:
   name: mas-{{ .Values.mas_instance_id }}-pipelines
   annotations:
     "helm.sh/hook": "post-delete"
+    "helm.sh/hook-delete-policy": "hook-succeeded,hook-failed"
 
 ---
 apiVersion: batch/v1
