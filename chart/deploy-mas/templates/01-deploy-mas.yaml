@@ -74,7 +74,7 @@ spec:
         #    claimName: config-pvc
       containers:
         - name: mas-deploy
-          image: quay.io/ibmmas/cli:7.19.0-pre.mas-uninstall-fixes
+          image: quay.io/ibmmas/cli:7.18.0-pre.master
           imagePullPolicy: Always
           #volumeMounts:
           #  - mountPath: "/usr/config-pvc"
@@ -101,7 +101,6 @@ spec:
               echo "ENTITLEMENT_KEY=${ENTITLEMENT_KEY}"
               echo "SLS_LICENSE_ID=${SLS_LICENSE_ID}"
               echo "SLS_LICENSE_FILE_LOCAL=${SLS_LICENSE_FILE_LOCAL}"
-              echo "UDS_ACTION="install-dro"="install-dro"
               echo "UDS_CONTACT_EMAIL=${UDS_CONTACT_EMAIL}"
               echo "UDS_CONTACT_FIRSTNAME=${UDS_CONTACT_FIRSTNAME}"
               echo "UDS_CONTACT_LASTNAME=${UDS_CONTACT_LASTNAME}"
@@ -132,7 +131,7 @@ spec:
                   -W "${MAS_WORKSPACE_NAME}" -c "${MAS_CATALOG_VERSION}" \
                   --mas-channel "${MAS_CHANNEL}" --ibm-entitlement-key "${ENTITLEMENT_KEY}" \
                   --license-id "${SLS_LICENSE_ID}" --license-file "${SLS_LICENSE_FILE_LOCAL}" \
-                  --uds-action "install_dro" --uds-email "${UDS_CONTACT_EMAIL}" --uds-firstname "${UDS_CONTACT_FIRSTNAME}" \
+                  --uds-email "${UDS_CONTACT_EMAIL}" --uds-firstname "${UDS_CONTACT_FIRSTNAME}" \
                   --uds-lastname "${UDS_CONTACT_LASTNAME}" --storage-rwx "${STORAGE_CLASS_RWX}" \
                   --storage-pipeline "${PIPELINE_STORAGE_CLASS}" --storage-accessmode "${PIPELINE_STORAGE_ACCESSMODE}" \
                   --no-confirm --no-wait-for-pvcs --accept-license
@@ -156,11 +155,6 @@ spec:
                   --db2u-logs-storage "${DB2U_LOGS_STORAGE}" --db2u-meta-storage "${DB2U_META_STORAGE}" \
                   --db2u-temp-storage "${DB2U_TEMP_STORAGE}" \
                   --no-confirm --no-wait-for-pvcs --accept-license
-                
-                elif [ "${DEPLOYMENT_FLAVOUR}" == "uninst" ]; then
-                  echo "Core+Manage installation started"
-
-                mas uninstall -i "${MAS_INSTANCE_ID}" --no-confirm
 
               else
                 echo "Passed DEPLOYMENT_FLAVOUR not supported, Supported values = core, mange"
