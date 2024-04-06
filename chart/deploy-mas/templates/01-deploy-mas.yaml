@@ -101,6 +101,7 @@ spec:
               echo "ENTITLEMENT_KEY=${ENTITLEMENT_KEY}"
               echo "SLS_LICENSE_ID=${SLS_LICENSE_ID}"
               echo "SLS_LICENSE_FILE_LOCAL=${SLS_LICENSE_FILE_LOCAL}"
+              echo "UDS_ACTION="install-dro"="install-dro"
               echo "UDS_CONTACT_EMAIL=${UDS_CONTACT_EMAIL}"
               echo "UDS_CONTACT_FIRSTNAME=${UDS_CONTACT_FIRSTNAME}"
               echo "UDS_CONTACT_LASTNAME=${UDS_CONTACT_LASTNAME}"
@@ -131,7 +132,7 @@ spec:
                   -W "${MAS_WORKSPACE_NAME}" -c "${MAS_CATALOG_VERSION}" \
                   --mas-channel "${MAS_CHANNEL}" --ibm-entitlement-key "${ENTITLEMENT_KEY}" \
                   --license-id "${SLS_LICENSE_ID}" --license-file "${SLS_LICENSE_FILE_LOCAL}" \
-                  --uds-email "${UDS_CONTACT_EMAIL}" --uds-firstname "${UDS_CONTACT_FIRSTNAME}" \
+                  --uds-action "install_dro" --uds-email "${UDS_CONTACT_EMAIL}" --uds-firstname "${UDS_CONTACT_FIRSTNAME}" \
                   --uds-lastname "${UDS_CONTACT_LASTNAME}" --storage-rwx "${STORAGE_CLASS_RWX}" \
                   --storage-pipeline "${PIPELINE_STORAGE_CLASS}" --storage-accessmode "${PIPELINE_STORAGE_ACCESSMODE}" \
                   --no-confirm --no-wait-for-pvcs --accept-license
