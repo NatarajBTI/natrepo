@@ -8,6 +8,18 @@ variable "ibmcloud_api_key" {
   sensitive   = true
 }
 
+variable "cluster_id" {
+  type        = string
+  description = "Id of the target IBM Cloud OpenShift Cluster"
+  nullable    = false
+}
+
+variable "region" {
+  type        = string
+  description = "Region of the target IBM Cloud OpenShift Cluster"
+  nullable    = false
+}
+
 variable "mas_entitlement_key" {
   description = "Entitlement key to access MAS Image registry"
   type        = string
@@ -89,12 +101,6 @@ variable "uds_contact_firstname" {
 variable "uds_contact_lastname" {
   type        = string
   description = "Enter your last name to be used in UDS"
-  nullable    = false
-}
-
-variable "cluster_id" {
-  type        = string
-  description = "Id of the target IBM Cloud OpenShift Cluster"
   nullable    = false
 }
 
