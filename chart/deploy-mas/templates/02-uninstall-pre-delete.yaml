@@ -85,13 +85,13 @@ spec:
               if [ "${DEPLOYMENT_FLAVOUR}" == "core" ]; then
                 echo "Inside pre-delete hook and uninstall MAS Core instance"
                 mas uninstall -i "${MAS_INSTANCE_ID}" --no-confirm
-                sleep 150
+                sleep 600
 
               elif [ "${DEPLOYMENT_FLAVOUR}" == "manage" ]; then
                 echo "Inside pre-delete hook and uninstall MAS Core + Manage instance"
                 mas uninstall -i "${MAS_INSTANCE_ID}" --no-confirm
                 oc delete project db2u
-                sleep 150
+                sleep 600
               fi
 
           env:
