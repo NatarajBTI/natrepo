@@ -89,7 +89,7 @@ resource "helm_release" "maximo_helm_release" {
     value = var.uds_contact_lastname
   }
   
-   name             = "maximo-helm-release2"
+   name             = "maximo-helm-release"
   chart            = "${path.module}/chart/deploy-mas"
   create_namespace = false
   timeout          = 300
