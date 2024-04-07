@@ -57,7 +57,9 @@ variable "storage_class_rwx" {
 variable "pipeline_storage_class" {
   type        = string
   description = "Enter the storage class for pipeline"
-  default     = "ibmc-vpc-block-retain-10iops-tier"}
+  default     = "ibmc-vpc-block-retain-10iops-tier"
+  
+}
 
 
 variable "sls_license_id" {
@@ -102,13 +104,6 @@ variable "cluster_id" {
   description = "Id of the target IBM Cloud OpenShift Cluster"
   nullable    = false
 }
-
-# variable "resource_group" {
-#   type        = string
-#   description = "Resource group to provision the cluster in"
-#   default     = null
-# }
-
 
 variable "cluster_config_endpoint_type" {
   description = "Specify which type of endpoint to use for for cluster config access: 'default', 'private', 'vpe', 'link'. 'default' value will use the default endpoint of the cluster."
