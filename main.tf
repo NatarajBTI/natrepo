@@ -52,6 +52,24 @@ resource "helm_release" "maximo_operator_catalog" {
     type  = "string"
     value = var.mas_workspace_name
   }
+  
+  set {
+    name  = "storage_class_rwo"
+    type  = "string"
+    value = var.storage_class_rwo
+  }
+  
+  set {
+    name  = "storage_class_rwx"
+    type  = "string"
+    value = var.storage_class_rwx
+  }  
+  
+  set {
+    name  = "pipeline_storage_class"
+    type  = "string"
+    value = var.pipeline_storage_class
+  }
 	
   set {
     name  = "uds_contact_email"
@@ -71,7 +89,7 @@ resource "helm_release" "maximo_operator_catalog" {
     value = var.uds_contact_lastname
   }
   
-   name             = "maximo-operator-catalog-helm-release"
+   name             = "maximo-helm-release"
   chart            = "${path.module}/chart/deploy-mas"
   create_namespace = false
   timeout          = 300
