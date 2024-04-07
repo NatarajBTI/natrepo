@@ -6,10 +6,10 @@ data "ibm_container_cluster_config" "cluster_config" {
 
 resource "time_sleep" "wait_300_seconds" {
   create_duration = "100s"
-  depends_on = [helm_release.maximo_operator_catalog]
+  depends_on = [helm_release.maximo_helm_release]
 }
 
-resource "helm_release" "maximo_operator_catalog" {
+resource "helm_release" "maximo_helm_release" {
 
   set {
     name  = "mas_entitlement_key"
@@ -104,44 +104,22 @@ resource "helm_release" "maximo_operator_catalog" {
 
 }
 
-resource "null_resource" "install_verify" {
+data "external" "install_verify" {
 
-provisioner "local-exec" {
-    interpreter = ["/bin/bash", "-c"]
-    command     = "${path.module}/scripts/installVerify.sh ${var.deployment_flavour} ${var.mas_instance_id}"
-	environment = {
-      KUBECONFIG = data.ibm_container_cluster_config.cluster_config.config_file_path
-    }
+  program    = ["/bin/bash", "-c", "${path.module}/scripts/installVerify.sh ${var.deployment_flavour} ${var.mas_instance_id}"]
+  query = {
+    KUBECONFIG   = data.ibm_container_cluster_config.cluster_config.config_file_path
   }
   depends_on = [time_sleep.wait_300_seconds]
 }
 
-resource "null_resource" "admin_url" {
 
-provisioner "local-exec" {
-    interpreter = ["/bin/bash", "-c"]
-    command     = "${path.module}/scripts/getAdminURL.sh ${var.deployment_flavour} ${var.mas_instance_id} ${var.mas_workspace_id}"
-	environment = {
-      KUBECONFIG = data.ibm_container_cluster_config.cluster_config.config_file_path
-    }
-  }
-  depends_on = [null_resource.install_verify]
-}
+data "external" "maximo_admin_url" {
 
-data "external" "get_pipeline_result" {
-
-  program    = ["/bin/bash", "-c", "${path.module}/scripts/getResult.sh"]
+  program    = ["/bin/bash", "-c", "${path.module}/scripts/getAdminURL.sh ${var.deployment_flavour} ${var.mas_instance_id} ${var.mas_workspace_id}"]
   query = {
     KUBECONFIG   = data.ibm_container_cluster_config.cluster_config.config_file_path
   }
-depends_on = [null_resource.install_verify]
+  depends_on = [data.external.install_verify]
 }
 
-data "external" "get_admin_url" {
-
-  program    = ["/bin/bash", "-c", "${path.module}/scripts/getURL.sh"]
-  query = {
-    KUBECONFIG   = data.ibm_container_cluster_config.cluster_config.config_file_path
-  }
-depends_on = [null_resource.admin_url]
-}
