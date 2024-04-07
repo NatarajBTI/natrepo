@@ -8,10 +8,33 @@ variable "ibmcloud_api_key" {
   sensitive   = true
 }
 
-variable "region" {
-  description = "Cluster region"
+variable "mas_entitlement_key" {
+  description = "Entitlement key to access MAS Image registry"
   type        = string
+  sensitive   = true
+}
+
+variable "mas_license" {
+  description = "MAS License file content"
+  type        = string
+  sensitive   = true
+}
+
+variable "sls_license_id" {
+  type        = string
+  description = "Enter the SLS license ID"
+  sensitive   = true
   nullable    = false
+}
+
+variable "deployment_flavour" {
+  type        = string
+  description = "Enter core for just MAS Core and enter manage for MAS Core+Manage"
+  nullable    = false
+  validation {
+    error_message = "Invalid deployment flavour type! Valid values are 'core' or 'manage'"
+    condition     = contains(["core", "manage"], var.deployment_flavour)
+  }
 }
 
 variable "mas_instance_id" {
@@ -30,16 +53,6 @@ variable "mas_workspace_name" {
   type        = string
   description = "Enter the workspace name"
   default     = "wrkns1"
-}
-
-variable "deployment_flavour" {
-  type        = string
-  description = "Enter core for just MAS Core and enter manage for MAS Core+Manage"
-  nullable    = false
-  validation {
-    error_message = "Invalid deployment flavour type! Valid values are 'core' or 'manage'"
-    condition     = contains(["core", "manage"], var.deployment_flavour)
-  }
 }
 
 variable "storage_class_rwo" {
@@ -61,14 +74,6 @@ variable "pipeline_storage_class" {
   
 }
 
-
-variable "sls_license_id" {
-  type        = string
-  description = "Enter the SLS license ID"
-  sensitive   = true
-  nullable    = false
-}
-
 variable "uds_contact_email" {
   type        = string
   description = "Enter the email ID for UDS"
@@ -85,18 +90,6 @@ variable "uds_contact_lastname" {
   type        = string
   description = "Enter your last name to be used in UDS"
   nullable    = false
-}
-
-variable "mas_entitlement_key" {
-  description = "Entitlement key to access MAS Image registry"
-  type        = string
-  sensitive   = true
-}
-
-variable "mas_license" {
-  description = "MAS License file content"
-  type        = string
-  sensitive   = true
 }
 
 variable "cluster_id" {
