@@ -118,8 +118,8 @@ if __name__ == "__main__":
     # get the KUBECONFIG path from the json
     kubeconfig = input_json['KUBECONFIG']
 
-    instanceId = sys.argv[1]
-    capability = sys.argv[2]
+    capability = sys.argv[1]
+    instanceId = sys.argv[2]    
     workspaceId = sys.argv[3]
     
     if capability == "core":
