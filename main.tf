@@ -112,3 +112,13 @@ data "external" "install_verify" {
   }
 depends_on = [time_sleep.wait_300_seconds]
 }
+
+data "external" "maximo_admin_url" {
+
+  #program    = ["/bin/bash", "-c", "${path.module}/scripts/getAdminURL.sh ${var.deployment_flavour} ${var.mas_instance_id} ${var.mas_workspace_id}"]
+  program    = ["python3", "${path.module}/scripts/getAdminURL.py", "${var.deployment_flavour}", "${var.mas_instance_id}", "${var.mas_workspace_id}"]
+  query = {
+    KUBECONFIG   = data.ibm_container_cluster_config.cluster_config.config_file_path
+  }
+depends_on = [data.external.install_verify]
+}
