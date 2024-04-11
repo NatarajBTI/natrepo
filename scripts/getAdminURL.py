@@ -14,8 +14,10 @@ def getAdminURLCore(kube_config, instid):
         output, _ = process.communicate()
 
         if process.returncode != 0:
-            print("Error: Failed to execute 'oc get route' command")
-            sys.exit(1)
+            print({
+                "error":f"Failed to execute 'oc get route' command"
+            })
+            return
 
         data = json.loads(output)
         routes = data.get('items', [])
@@ -25,8 +27,10 @@ def getAdminURLCore(kube_config, instid):
                 varstr = route['spec']['host']
                 break
         else:
-            print(f"Error: No route found for 'admin.{instid}'")
-            sys.exit(2)
+            print({
+                "error":f"Error: No route found for 'admin.{instid}'"
+            })
+            return
 
         result = {
             "admin_url": f"https://{varstr}"
@@ -38,7 +42,6 @@ def getAdminURLCore(kube_config, instid):
         error = {"error":f"Error: Failed to parse JSON: {e}"}
         json_error = json.dumps(error)
         print(json_error)
-        sys.exit(3)
 
     except subprocess.CalledProcessError as e:
         error = {
@@ -46,7 +49,6 @@ def getAdminURLCore(kube_config, instid):
         }
         json_error = json.dumps(error)
         print(json_error)
-        sys.exit(4)
 
     except OSError as e:
         error = {
@@ -54,7 +56,6 @@ def getAdminURLCore(kube_config, instid):
         }
         json_error = json.dumps(error)
         print(json_error)
-        sys.exit(5)
 
 def getAdminURLManage(kube_config, instid,workspaceId):
     try:
@@ -67,8 +68,10 @@ def getAdminURLManage(kube_config, instid,workspaceId):
         output, _ = process.communicate()
 
         if process.returncode != 0:
-            print("Error: Failed to execute 'oc get route' command")
-            sys.exit(1)
+            print({
+                "error":"Failed to execute 'oc get route' command"
+            })
+            return
 
         data = json.loads(output)
         routes = data.get('items', [])
@@ -78,8 +81,10 @@ def getAdminURLManage(kube_config, instid,workspaceId):
                 varstr = route['spec']['host']
                 break
         else:
-            print(f"Error: No route found for '{workspaceId}-all.{instid}'")
-            sys.exit(2)
+            print({
+                "error": f"No route found for '{workspaceId}-all.{instid}'"
+            })
+            return
 
         result = {
             "admin_url": f"https://{varstr}/maximo"
@@ -91,7 +96,7 @@ def getAdminURLManage(kube_config, instid,workspaceId):
         error = {"error":f"Error: Failed to parse JSON: {e}"}
         json_error = json.dumps(error)
         print(json_error)
-        sys.exit(3)
+        
 
     except subprocess.CalledProcessError as e:
         error = {
@@ -99,15 +104,13 @@ def getAdminURLManage(kube_config, instid,workspaceId):
         }
         json_error = json.dumps(error)
         print(json_error)
-        sys.exit(4)
-
+        
     except OSError as e:
         error = {
             "error" : f"Error: Failed to execute command: {e}"
         }
         json_error = json.dumps(error)
         print(json_error)
-        sys.exit(5)
 
 
 if __name__ == "__main__":
@@ -119,7 +122,7 @@ if __name__ == "__main__":
     kubeconfig = input_json['KUBECONFIG']
 
     capability = sys.argv[1]
-    instanceId = sys.argv[2]    
+    instanceId = sys.argv[2]
     workspaceId = sys.argv[3]
     
     if capability == "core":
