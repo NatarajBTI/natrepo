@@ -46,7 +46,7 @@ def getAdminURLCore(kube_config, instid):
         print(f"Error: Failed to execute command: {e}")
         sys.exit(5)
 
-def getAdminURLManage(kube_config, instid):
+def getAdminURLManage(kube_config, instid,workspaceId):
     try:
         process = subprocess.Popen(['oc', 'get', 'route',
                                     '-n', f'mas-{instid}-manage',
@@ -62,7 +62,7 @@ def getAdminURLManage(kube_config, instid):
 
         data = json.loads(output)
         routes = data.get('items', [])
-
+        varstr = ""
         for route in routes:
             if f'{workspaceId}-all.{instid}' in route['spec']['host']:
                 varstr = route['spec']['host']
