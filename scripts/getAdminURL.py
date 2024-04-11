@@ -14,9 +14,9 @@ def getAdminURLCore(kube_config, instid):
         output, _ = process.communicate()
 
         if process.returncode != 0:
-            print({
+            print(json.dumps({
                 "error":f"Failed to execute 'oc get route' command"
-            })
+            }))
             return
 
         data = json.loads(output)
@@ -27,9 +27,9 @@ def getAdminURLCore(kube_config, instid):
                 varstr = route['spec']['host']
                 break
         else:
-            print({
+            print(json.dumps({
                 "error":f"Error: No route found for 'admin.{instid}'"
-            })
+            }))
             return
 
         result = {
@@ -68,9 +68,9 @@ def getAdminURLManage(kube_config, instid,workspaceId):
         output, _ = process.communicate()
 
         if process.returncode != 0:
-            print({
+            print(json.dumps({
                 "error":"Failed to execute 'oc get route' command"
-            })
+            }))
             return
 
         data = json.loads(output)
@@ -81,9 +81,9 @@ def getAdminURLManage(kube_config, instid,workspaceId):
                 varstr = route['spec']['host']
                 break
         else:
-            print({
+            print(json.dumps({
                 "error": f"No route found for '{workspaceId}-all.{instid}'"
-            })
+            }))
             return
 
         result = {
