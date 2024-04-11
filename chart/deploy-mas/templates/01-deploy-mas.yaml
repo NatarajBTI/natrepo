@@ -74,7 +74,7 @@ spec:
         #    claimName: config-pvc
       containers:
         - name: mas-deploy
-          image: quay.io/ibmmas/cli:7.18.0-pre.master
+          image: quay.io/ibmmas/cli:8.0.2-pre.master
           imagePullPolicy: Always
           #volumeMounts:
           #  - mountPath: "/usr/config-pvc"
