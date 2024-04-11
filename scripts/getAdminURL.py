@@ -5,6 +5,10 @@ import sys
 
 def getAdminURLCore(kube_config, instid):
     try:
+        result = {
+            "admin_url": ""
+        }
+        varstr = ""
         process = subprocess.Popen(['oc', 'get', 'route',
                                     '-n', f'mas-{instid}-core',
                                     '-o', 'json',
@@ -12,53 +16,42 @@ def getAdminURLCore(kube_config, instid):
                                    stdout=subprocess.PIPE, universal_newlines=True)
 
         output, _ = process.communicate()
-
+        
         if process.returncode != 0:
-            print(json.dumps({
-                "error":f"Failed to execute 'oc get route' command"
-            }))
-            return
+            varstr = "INSTALL_FAILED_CONDITION"
+            result['admin_url'] = varstr
+            json_output = json.dumps(result)
+            return json_output
 
         data = json.loads(output)
         routes = data.get('items', [])
-        varstr = ""
+        
         for route in routes:
             if f'admin.{instid}' in route['spec']['host']:
                 varstr = route['spec']['host']
                 break
+        if varstr != "":
+            result['admin_url'] = f'https://{varstr}'
         else:
-            print(json.dumps({
-                "error":f"Error: No route found for 'admin.{instid}'"
-            }))
-            return
-
-        result = {
-            "admin_url": f"https://{varstr}"
-        }
+            varstr = "INSTALL_FAILED_CONDITION"
+            result['admin_url'] = varstr
+        
         json_output = json.dumps(result)
         print(json_output)
 
-    except json.JSONDecodeError as e:
-        error = {"error":f"Error: Failed to parse JSON: {e}"}
-        json_error = json.dumps(error)
-        print(json_error)
-
-    except subprocess.CalledProcessError as e:
-        error = {
-            "error": f"Error: Command '{e.cmd}' returned non-zero exit status {e.returncode}"
-        }
-        json_error = json.dumps(error)
-        print(json_error)
-
-    except OSError as e:
-        error = {
-            "error" : f"Error: Failed to execute command: {e}"
-        }
-        json_error = json.dumps(error)
-        print(json_error)
+    except Exception as e:
+        varstr = "INSTALL_FAILED_CONDITION"
+        result['admin_url'] = varstr
+        json_output = json.dumps(result)
+        print(json_output)
+        
 
 def getAdminURLManage(kube_config, instid,workspaceId):
     try:
+        result = {
+            "admin_url": ""
+        }
+        varstr = ""
         process = subprocess.Popen(['oc', 'get', 'route',
                                     '-n', f'mas-{instid}-manage',
                                     '-o', 'json',
@@ -68,49 +61,35 @@ def getAdminURLManage(kube_config, instid,workspaceId):
         output, _ = process.communicate()
 
         if process.returncode != 0:
-            print(json.dumps({
-                "error":"Failed to execute 'oc get route' command"
-            }))
-            return
+            varstr = "INSTALL_FAILED_CONDITION"
+            result['admin_url'] = varstr
+            json_output = json.dumps(result)
+            return json_output
 
         data = json.loads(output)
         routes = data.get('items', [])
-        varstr = ""
+        
         for route in routes:
-            if f'{workspaceId}-all.{instid}' in route['spec']['host']:
+            if f'{workspaceId}-all.manage.{instid}' in route['spec']['host']:
                 varstr = route['spec']['host']
                 break
+        
+        if varstr != "":
+            result['admin_url'] = f'https://{varstr}/maximo'
         else:
-            print(json.dumps({
-                "error": f"No route found for '{workspaceId}-all.{instid}'"
-            }))
-            return
-
-        result = {
-            "admin_url": f"https://{varstr}/maximo"
-        }
+            varstr = "INSTALL_FAILED_CONDITION"
+            result['admin_url'] = varstr
+        
+        json_output = json.dumps(result)
+        print(json_output)
+    
+    except Exception as e:
+        varstr = "INSTALL_FAILED_CONDITION"
+        result['admin_url'] = varstr
         json_output = json.dumps(result)
         print(json_output)
 
-    except json.JSONDecodeError as e:
-        error = {"error":f"Error: Failed to parse JSON: {e}"}
-        json_error = json.dumps(error)
-        print(json_error)
-        
 
-    except subprocess.CalledProcessError as e:
-        error = {
-            "error": f"Error: Command '{e.cmd}' returned non-zero exit status {e.returncode}"
-        }
-        json_error = json.dumps(error)
-        print(json_error)
-        
-    except OSError as e:
-        error = {
-            "error" : f"Error: Failed to execute command: {e}"
-        }
-        json_error = json.dumps(error)
-        print(json_error)
 
 
 if __name__ == "__main__":
