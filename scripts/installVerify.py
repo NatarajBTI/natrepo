@@ -12,9 +12,9 @@ def verifyPipelineStatus(kube_config, instid, capability):
     elif capability == "manage":
         RETRY_COUNT = 60
         TIME_TO_WAIT = 300
-    
-    
-      
+
+
+
     try:
         pipline_status= "Failed Retrying, Pipeline still in Running state "
         for interval_count in range(RETRY_COUNT):
@@ -32,22 +32,21 @@ def verifyPipelineStatus(kube_config, instid, capability):
 
             data = json.loads(output)
             pipeline_runs = data.get('items', [])
-            
+
             pipeline_run = None
-            
+
             if len(pipeline_runs) > 0:
                 pipeline_run = pipeline_runs[0]
-            
+
             if pipeline_run:
 
-                pipeline_status_reason = pipeline_run.get('status')[0].get('reason')
-                
+                pipeline_status_reason = pipeline_run.get('status').get('conditions')[0].get('reason')
+
                 if pipeline_status_reason == "Completed":
                     pipline_status = "Successful"
                     break
-                    
+
                 elif pipeline_status_reason == "Running":
-					print("Pipeline is still running")
                     time.sleep(TIME_TO_WAIT)
                     pass
                 elif pipeline_status_reason == "Failed":
@@ -79,5 +78,6 @@ if __name__ == "__main__":
 
     # get the KUBECONFIG path from the json
     kubeconfig = input_json['KUBECONFIG']
-    
-    verifyPipelineStatus(kube_config=kubeconfig, instid="natinst1",capability="core")
+
+    verifyPipelineStatus(kube_config=kubeconfig, instid=sys.argv[1],capability=sys.argv[2])
+    #verifyPipelineStatus(kube_config=kubeconfig, instid="natinst2",capability="manage")

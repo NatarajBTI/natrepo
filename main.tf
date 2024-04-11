@@ -5,11 +5,11 @@ data "ibm_container_cluster_config" "cluster_config" {
 }
 
 resource "time_sleep" "wait_300_seconds" {
-  create_duration = "100s"
-  depends_on = [helm_release.maximo_helm_release]
+  create_duration = "500s"
+  depends_on = [helm_release.maximo_operator_catalog]
 }
 
-resource "helm_release" "maximo_helm_release" {
+resource "helm_release" "maximo_operator_catalog" {
 
   set {
     name  = "mas_entitlement_key"
@@ -89,7 +89,7 @@ resource "helm_release" "maximo_helm_release" {
     value = var.uds_contact_lastname
   }
   
-   name             = "maximo-helm-release"
+  name             = "maximo-operator-catalog-helm-release"
   chart            = "${path.module}/chart/deploy-mas"
   create_namespace = false
   timeout          = 300
@@ -101,25 +101,14 @@ resource "helm_release" "maximo_helm_release" {
   recreate_pods              = true
   disable_openapi_validation = false
 
-
 }
 
 data "external" "install_verify" {
 
-  program    = ["/bin/bash", "-c", "${path.module}/scripts/installVerify.sh ${var.deployment_flavour} ${var.mas_instance_id}"]
+  #program    = ["/bin/bash", "-c", "${path.module}/scripts/installVerify.sh ${var.deployment_flavour} ${var.mas_instance_id}"]
+  program    = ["python3", "${path.module}/scripts/installVerify.py", "${var.mas_instance_id}", "${var.deployment_flavour}"]
   query = {
     KUBECONFIG   = data.ibm_container_cluster_config.cluster_config.config_file_path
   }
-  depends_on = [time_sleep.wait_300_seconds]
+depends_on = [time_sleep.wait_300_seconds]
 }
-
-
-data "external" "maximo_admin_url" {
-
-  program    = ["/bin/bash", "-c", "${path.module}/scripts/getAdminURL.sh ${var.deployment_flavour} ${var.mas_instance_id} ${var.mas_workspace_id}"]
-  query = {
-    KUBECONFIG   = data.ibm_container_cluster_config.cluster_config.config_file_path
-  }
-  depends_on = [data.external.install_verify]
-}
-
