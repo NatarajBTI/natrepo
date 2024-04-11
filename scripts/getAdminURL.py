@@ -35,15 +35,25 @@ def getAdminURLCore(kube_config, instid):
         print(json_output)
 
     except json.JSONDecodeError as e:
-        print(f"Error: Failed to parse JSON: {e}")
+        error = {"error":f"Error: Failed to parse JSON: {e}"}
+        json_error = json.dumps(error)
+        print(json_error)
         sys.exit(3)
 
     except subprocess.CalledProcessError as e:
-        print(f"Error: Command '{e.cmd}' returned non-zero exit status {e.returncode}")
+        error = {
+            "error": f"Error: Command '{e.cmd}' returned non-zero exit status {e.returncode}"
+        }
+        json_error = json.dumps(error)
+        print(json_error)
         sys.exit(4)
 
     except OSError as e:
-        print(f"Error: Failed to execute command: {e}")
+        error = {
+            "error" : f"Error: Failed to execute command: {e}"
+        }
+        json_error = json.dumps(error)
+        print(json_error)
         sys.exit(5)
 
 def getAdminURLManage(kube_config, instid,workspaceId):
@@ -68,7 +78,7 @@ def getAdminURLManage(kube_config, instid,workspaceId):
                 varstr = route['spec']['host']
                 break
         else:
-            print(f"Error: No route found for 'admin.{instid}'")
+            print(f"Error: No route found for '{workspaceId}-all.{instid}'")
             sys.exit(2)
 
         result = {
@@ -78,15 +88,25 @@ def getAdminURLManage(kube_config, instid,workspaceId):
         print(json_output)
 
     except json.JSONDecodeError as e:
-        print(f"Error: Failed to parse JSON: {e}")
+        error = {"error":f"Error: Failed to parse JSON: {e}"}
+        json_error = json.dumps(error)
+        print(json_error)
         sys.exit(3)
 
     except subprocess.CalledProcessError as e:
-        print(f"Error: Command '{e.cmd}' returned non-zero exit status {e.returncode}")
+        error = {
+            "error": f"Error: Command '{e.cmd}' returned non-zero exit status {e.returncode}"
+        }
+        json_error = json.dumps(error)
+        print(json_error)
         sys.exit(4)
 
     except OSError as e:
-        print(f"Error: Failed to execute command: {e}")
+        error = {
+            "error" : f"Error: Failed to execute command: {e}"
+        }
+        json_error = json.dumps(error)
+        print(json_error)
         sys.exit(5)
 
 
