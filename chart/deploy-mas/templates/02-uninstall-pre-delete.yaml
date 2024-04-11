@@ -86,12 +86,14 @@ spec:
                 echo "Inside pre-delete hook and uninstall MAS Core instance"
                 mas uninstall -i "${MAS_INSTANCE_ID}" --no-confirm
                 sleep 600
+                helm delete maximo-operator-catalog-helm-release -n default --no-hooks
 
               elif [ "${DEPLOYMENT_FLAVOUR}" == "manage" ]; then
                 echo "Inside pre-delete hook and uninstall MAS Core + Manage instance"
                 mas uninstall -i "${MAS_INSTANCE_ID}" --no-confirm
                 oc delete project db2u
-                sleep 600
+                sleep 1500
+                helm delete maximo-operator-catalog-helm-release -n default --no-hooks
               fi
 
           env:
