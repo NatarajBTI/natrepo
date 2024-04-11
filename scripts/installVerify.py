@@ -25,8 +25,8 @@ def verifyPipelineStatus(kube_config, instid, capability):
             output, _ = process.communicate()
 
             if process.returncode != 0:
-                print("Error: Failed to execute 'oc get route' command")
-                sys.exit(1)
+                print({"error":"Error: Failed to execute 'oc get route' command"})
+                return
 
             data = json.loads(output)
             pipeline_runs = data.get('items', [])
@@ -59,17 +59,14 @@ def verifyPipelineStatus(kube_config, instid, capability):
         json_output = json.dumps(result)
         print(json_output)
 
-    except json.JSONDecodeError as e:
-        print(f"Error: Failed to parse JSON: {e}")
-        sys.exit(3)
-
-    except subprocess.CalledProcessError as e:
-        print(f"Error: Command '{e.cmd}' returned non-zero exit status {e.returncode}")
-        sys.exit(4)
-
-    except OSError as e:
-        print(f"Error: Failed to execute command: {e}")
-        sys.exit(5)
+    except Exception as e:
+        error = {
+            "error":str(e)
+        }
+        json_error = json.dumps(error)
+        print(json_error)
+        
+        
 
 
 if __name__ == "__main__":
@@ -80,4 +77,4 @@ if __name__ == "__main__":
     # get the KUBECONFIG path from the json
     kubeconfig = input_json['KUBECONFIG']
     
-    verifyPipelineStatus(kube_config=kubeconfig, instid=sys.argv[1],capability=sys.argv[2])
+    verifyPipelineStatus(kube_config=kubeconfig, capability=sys.argv[1],instid=sys.argv[2])
