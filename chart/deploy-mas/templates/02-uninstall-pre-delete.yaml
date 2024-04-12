@@ -66,7 +66,7 @@ spec:
         #    claimName: config-pvc
       containers:
         - name: mas-undeploy
-          image: quay.io/ibmmas/cli:8.0.0-pre.ajw-nfsvpc
+          image: quay.io/ibmmas/cli:8.0.1-pre.ajw-nfsvpc
           imagePullPolicy: Always
           #volumeMounts:
           #  - mountPath: "/usr/config-pvc"
