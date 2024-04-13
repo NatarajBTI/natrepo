@@ -18,7 +18,7 @@ def getAdminURLCore(kube_config, instid):
         output, _ = process.communicate()
         
         if process.returncode != 0:
-            varstr = "INSTALL_FAILED_CONDITION"
+            varstr = ""
             result['admin_url'] = varstr
             json_output = json.dumps(result)
             return json_output
