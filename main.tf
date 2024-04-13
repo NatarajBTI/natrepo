@@ -92,7 +92,7 @@ resource "helm_release" "maximo_operator_catalog" {
   name             = "maximo-operator-catalog-helm-release"
   chart            = "${path.module}/chart/deploy-mas"
   create_namespace = false
-  timeout          = 300
+  timeout          = 900
   # dependency_update = true
   # force_update      = false
   force_update               = true
