@@ -4,10 +4,10 @@ data "ibm_container_cluster_config" "cluster_config" {
   endpoint_type   = var.cluster_config_endpoint_type != "default" ? var.cluster_config_endpoint_type : null
 }
 
-resource "time_sleep" "wait_300_seconds" {
-  create_duration = "500s"
-  depends_on = [helm_release.maximo_operator_catalog]
-}
+#resource "time_sleep" "wait_300_seconds" {
+  #create_duration = "500s"
+  #depends_on = [helm_release.maximo_operator_catalog]
+#}
 
 resource "helm_release" "maximo_operator_catalog" {
 
@@ -92,7 +92,7 @@ resource "helm_release" "maximo_operator_catalog" {
   name             = "maximo-operator-catalog-helm-release"
   chart            = "${path.module}/chart/deploy-mas"
   create_namespace = false
-  timeout          = 900
+  timeout          = 1200
   # dependency_update = true
   # force_update      = false
   force_update               = true
@@ -110,7 +110,8 @@ data "external" "install_verify" {
   query = {
     KUBECONFIG   = data.ibm_container_cluster_config.cluster_config.config_file_path
   }
-depends_on = [time_sleep.wait_300_seconds]
+#depends_on = [time_sleep.wait_300_seconds]
+depends_on = [helm_release.maximo_operator_catalog]
 }
 
 data "external" "maximo_admin_url" {
