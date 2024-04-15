@@ -87,7 +87,7 @@ spec:
                 mas uninstall -i "${MAS_INSTANCE_ID}" --no-confirm
                 for (( i=0; i<=15; i++ ));
                 do
-                varstr=$(oc get pr -n mas-${MAS_INSTANCE_ID}-pipelines | grep uninstall awk -F' ' '{print $3}')
+                varstr=$(oc get pr -n mas-${MAS_INSTANCE_ID}-pipelines | grep uninstall | awk -F' ' '{print $3}')
                 if [[ $varstr == "Completed"  ]]; then
                 echo "Uninstall pipeline has completed successfully"
                 break
@@ -107,7 +107,7 @@ spec:
                 mas uninstall -i "${MAS_INSTANCE_ID}" --no-confirm
                 for (( i=0; i<=15; i++ ));
                 do
-                varstr=$(oc get pr -n mas-${MAS_INSTANCE_ID}-pipelines | grep uninstall awk -F' ' '{print $3}')
+                varstr=$(oc get pr -n mas-${MAS_INSTANCE_ID}-pipelines | grep uninstall | awk -F' ' '{print $3}')
                 if [[ $varstr == "Completed"  ]]; then
                 echo "Uninstall pipeline has completed successfully"
                 break
