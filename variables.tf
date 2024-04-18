@@ -41,7 +41,7 @@ variable "sls_license_id" {
 
 variable "deployment_flavour" {
   type        = string
-  description = "Enter core for just MAS Core and enter manage for MAS Core+Manage"
+  description = "Enter core for MAS Core deployment and enter manage for MAS Core+Manage deployment"
   nullable    = false
   validation {
     error_message = "Invalid deployment flavour type! Valid values are 'core' or 'manage'"
@@ -75,7 +75,7 @@ variable "storage_class_rwo" {
 
 variable "storage_class_rwx" {
   type        = string
-  description = "Enter the storage class (read-write many)"
+  description = "Enter the storage class (read-write many). Enter file storage class for DB2."
   default     = "ibmc-vpc-file-dp2"
 }
 
@@ -88,19 +88,19 @@ variable "pipeline_storage_class" {
 
 variable "uds_contact_email" {
   type        = string
-  description = "Enter the email ID for UDS"
+  description = "Enter the email ID for DRO"
   nullable    = false
 }
 
 variable "uds_contact_firstname" {
   type        = string
-  description = "Enter your first name to be used in UDS"
+  description = "Enter your first name to be used in DRO"
   nullable    = false
 }
 
 variable "uds_contact_lastname" {
   type        = string
-  description = "Enter your last name to be used in UDS"
+  description = "Enter your last name to be used in DRO"
   nullable    = false
 }
 

@@ -75,7 +75,7 @@ def verifyPipelineStatus(kube_config, instid, capability):
 
 def getFailureMessage(kube_config,instid):
     failure_msg = ""
-    # oc get taskrun -A -n mas-natinst6-pipelines 
+    # oc get taskrun -A -n mas-natinst6-pipelines
     process = subprocess.Popen(['oc', 'get', 'taskrun',
                                         '-A', '-n',f'mas-{instid}-pipelines',
                                         '-o', 'json','--kubeconfig', kube_config],

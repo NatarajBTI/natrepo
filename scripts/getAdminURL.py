@@ -16,7 +16,7 @@ def getAdminURLCore(kube_config, instid):
                                    stdout=subprocess.PIPE, universal_newlines=True)
 
         output, _ = process.communicate()
-        
+
         if process.returncode != 0:
             varstr = ""
             result['admin_url'] = varstr
@@ -25,7 +25,7 @@ def getAdminURLCore(kube_config, instid):
 
         data = json.loads(output)
         routes = data.get('items', [])
-        
+
         for route in routes:
             if f'admin.{instid}' in route['spec']['host']:
                 varstr = route['spec']['host']
@@ -33,18 +33,18 @@ def getAdminURLCore(kube_config, instid):
         if varstr != "":
             result['admin_url'] = f'https://{varstr}'
         else:
-            varstr = "INSTALL_FAILED_CONDITION"
+            varstr = ""
             result['admin_url'] = varstr
-        
+
         json_output = json.dumps(result)
         print(json_output)
 
     except Exception as e:
-        varstr = "INSTALL_FAILED_CONDITION"
+        varstr = ""
         result['admin_url'] = varstr
         json_output = json.dumps(result)
         print(json_output)
-        
+
 
 def getAdminURLManage(kube_config, instid,workspaceId):
     try:
@@ -61,30 +61,30 @@ def getAdminURLManage(kube_config, instid,workspaceId):
         output, _ = process.communicate()
 
         if process.returncode != 0:
-            varstr = "INSTALL_FAILED_CONDITION"
+            varstr = ""
             result['admin_url'] = varstr
             json_output = json.dumps(result)
             return json_output
 
         data = json.loads(output)
         routes = data.get('items', [])
-        
+
         for route in routes:
             if f'{workspaceId}-all.manage.{instid}' in route['spec']['host']:
                 varstr = route['spec']['host']
                 break
-        
+
         if varstr != "":
             result['admin_url'] = f'https://{varstr}/maximo'
         else:
-            varstr = "INSTALL_FAILED_CONDITION"
+            varstr = ""
             result['admin_url'] = varstr
-        
+
         json_output = json.dumps(result)
         print(json_output)
-    
+
     except Exception as e:
-        varstr = "INSTALL_FAILED_CONDITION"
+        varstr = ""
         result['admin_url'] = varstr
         json_output = json.dumps(result)
         print(json_output)
@@ -103,7 +103,7 @@ if __name__ == "__main__":
     capability = sys.argv[1]
     instanceId = sys.argv[2]
     workspaceId = sys.argv[3]
-    
+
     if capability == "core":
         getAdminURLCore(kube_config=kubeconfig, instid=instanceId)
     elif capability == "manage":
