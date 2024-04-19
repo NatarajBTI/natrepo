@@ -1,4 +1,4 @@
-{{ $ns              :=  printf "mas-%s-pipelines" .Values.mas_instance_id }}
+{{ $ns              :=  printf "mas-uninstall-pipelines" }}
 {{ $role_name       :=  "mas-undeploy-role" }}
 {{ $secret_name     :=  "mas-undeploy-secret" }}
 {{ $crole_name      :=  "mas-undeploy-crole" }}
@@ -13,6 +13,17 @@ apiVersion: v1
 kind: Namespace
 metadata:
   name: {{ $ns }}
+
+---
+kind: Secret
+apiVersion: v1
+metadata:
+  name: {{ $secret_name }}
+  namespace: {{ $ns }}
+data:
+  entitlement_key: {{ .Values.mas_entitlement_key }}
+  authorized_entitlement: {{ .Values.mas_license }}
+type: Opaque
 
 ---
 apiVersion: v1
@@ -86,7 +97,7 @@ spec:
         - name: {{ $job_name }}
           # 8.0.0-pre.master - sha256:5b5222caecdd860840fd1eb070999e29ed356310474741f76934d0a9f8921d99
           # below sha is for quay.io/ibmmas/cli:8.0.0-pre.mascore-2054 (tag 8.0.0), update it once we get a new release tag
-          image: quay.io/ibmmas/cli:8.0.1-pre.ajw-nfsvpc
+          image: quay.io/ibmmas/cli@sha256:2e82de3f6bf025ccbecbd9c704bca60f884c7a3cef8211690ebec1ba2ae02791
 
           imagePullPolicy: Always
           securityContext:
@@ -154,16 +165,29 @@ spec:
                 sleep 600
               fi
 
+
           env:
             - name: MAS_INSTANCE_ID
               value: "{{ .Values.mas_instance_id }}"
             - name: DEPLOYMENT_FLAVOUR
               value: "{{ .Values.deployment_flavour }}"
 
+            - name: ENTITLEMENT_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ $secret_name }}
+                  key: entitlement_key
+
+            - name: AUTHORIZED_ENTITLEMENT
+              valueFrom:
+                secretKeyRef:
+                  name: {{ $secret_name }}
+                  key: authorized_entitlement
+
           volumeMounts:
             - name: {{ $secret_name }}
               readOnly: true
-              mountPath: /etc/mas/deploy/secrets
+              mountPath: /etc/mas/undeploy/secrets
             #- mountPath: /opt/app-root/src
             #  name: app-root-volume
 
