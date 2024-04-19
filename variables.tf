@@ -20,24 +20,6 @@ variable "region" {
   nullable    = false
 }
 
-variable "mas_entitlement_key" {
-  description = "Entitlement key to access MAS Image registry"
-  type        = string
-  sensitive   = true
-}
-
-variable "mas_license" {
-  description = "MAS License file content"
-  type        = string
-  sensitive   = true
-}
-
-variable "sls_license_id" {
-  type        = string
-  description = "Enter the SLS license ID"
-  sensitive   = true
-  nullable    = false
-}
 
 variable "deployment_flavour" {
   type        = string
@@ -84,24 +66,6 @@ variable "pipeline_storage_class" {
   description = "Enter the storage class for pipeline"
   default     = "ibmc-vpc-block-retain-10iops-tier"
 
-}
-
-variable "uds_contact_email" {
-  type        = string
-  description = "Enter the email ID for DRO"
-  nullable    = false
-}
-
-variable "uds_contact_firstname" {
-  type        = string
-  description = "Enter your first name to be used in DRO"
-  nullable    = false
-}
-
-variable "uds_contact_lastname" {
-  type        = string
-  description = "Enter your last name to be used in DRO"
-  nullable    = false
 }
 
 variable "cluster_config_endpoint_type" {
