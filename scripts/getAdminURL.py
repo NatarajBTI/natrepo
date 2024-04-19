@@ -4,11 +4,15 @@ import sys
 
 
 def getAdminURLCore(kube_config, instid):
+    RETRY_COUNT = 3
+    TIME_TO_WAIT = 60
+    
     try:
         result = {
             "admin_url": ""
         }
         varstr = ""
+        for interval_count in range(RETRY_COUNT):
         process = subprocess.Popen(['oc', 'get', 'route',
                                     '-n', f'mas-{instid}-core',
                                     '-o', 'json',
