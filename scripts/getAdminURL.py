@@ -17,12 +17,6 @@ def getAdminURLCore(kube_config, instid):
 
         output, _ = process.communicate()
 
-        if process.returncode != 0:
-            varstr = ""
-            result['admin_url'] = varstr
-            json_output = json.dumps(result)
-            return json_output
-
         data = json.loads(output)
         routes = data.get('items', [])
 
@@ -59,13 +53,7 @@ def getAdminURLManage(kube_config, instid,workspaceId):
                                    stdout=subprocess.PIPE, universal_newlines=True)
 
         output, _ = process.communicate()
-
-        if process.returncode != 0:
-            varstr = ""
-            result['admin_url'] = varstr
-            json_output = json.dumps(result)
-            return json_output
-
+        
         data = json.loads(output)
         routes = data.get('items', [])
 
