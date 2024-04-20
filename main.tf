@@ -5,8 +5,8 @@ data "ibm_container_cluster_config" "cluster_config" {
 }
 
 #Wait for Redhat Openshift Pipelines operator to get installed & to pipeline to get started
-resource "time_sleep" "wait_500_seconds" {
-  create_duration = "500s"
+resource "time_sleep" "wait_200_seconds" {
+  create_duration = "200s"
   depends_on      = [helm_release.maximo_helm_release]
 }
 
@@ -112,7 +112,7 @@ data "external" "install_verify" {
   query = {
     KUBECONFIG = data.ibm_container_cluster_config.cluster_config.config_file_path
   }
-  depends_on = [time_sleep.wait_500_seconds]
+  depends_on = [time_sleep.wait_200_seconds]
 
 }
 
@@ -120,7 +120,7 @@ resource "null_resource" "pipeline_verify" {
 
 provisioner "local-exec" {
     interpreter = ["/bin/bash", "-c"]
-    command     = "${path.module}/scripts/pipelineVerify.sh var.mas_instance_id"
+    command     = "${path.module}/scripts/pipelineVerify.sh ${var.mas_instance_id}"
 	environment = {
       KUBECONFIG = data.ibm_container_cluster_config.cluster_config.config_file_path
     }
