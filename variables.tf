@@ -8,6 +8,14 @@ variable "ibmcloud_api_key" {
   sensitive   = true
 }
 
+variable "offering" {
+type = list
+default = ["core",
+"manage",
+"iot"]
+description = "A list of offerings"
+
+
 variable "cluster_id" {
   type        = string
   description = "Id of the target IBM Cloud OpenShift Cluster"
