@@ -2,17 +2,12 @@
 # Outputs
 ########################################################################################################################
 
-output "cos_instance_id" {
-  description = "COS instance id"
-  value       = ibm_resource_instance.cos_instance.id
+output "pipeline_execution_status" {
+  description = "Status of pipeline execution is"
+  value       = data.external.install_verify.result.PipelineRunStatus
 }
 
-output "resource_group_name" {
-  description = "Resource group name"
-  value       = module.resource_group.resource_group_name
-}
-
-output "resource_group_id" {
-  description = "Resource group ID"
-  value       = module.resource_group.resource_group_id
+output "maximo_admin_url" {
+  description = "Admin URL of MAS/Manage application is"
+  value       = data.external.maximo_admin_url.result.admin_url
 }
