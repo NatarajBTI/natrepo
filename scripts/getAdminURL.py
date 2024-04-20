@@ -4,84 +4,106 @@ import sys
 
 
 def getAdminURLCore(kube_config, instid):
-    RETRY_COUNT = 3
-    TIME_TO_WAIT = 60
-    
     try:
-        result = {
-            "admin_url": ""
-        }
-        varstr = ""
-        for interval_count in range(RETRY_COUNT):
-        process = subprocess.Popen(['oc', 'get', 'route',
-                                    '-n', f'mas-{instid}-core',
-                                    '-o', 'json',
-                                    '--kubeconfig', kube_config],
-                                   stdout=subprocess.PIPE, universal_newlines=True)
+        result = {"admin_url": ""}        
+        process = subprocess.Popen(
+            [
+                "oc",
+                "get",
+                "route",
+                "-n",
+                f"mas-{instid}-core",
+                "-o",
+                "json",
+                "--kubeconfig",
+                kube_config,
+            ],
+            stdout=subprocess.PIPE,
+            universal_newlines=True,
+        )
 
         output, _ = process.communicate()
 
+        if process.returncode != 0:
+            varstr = ""
+            result["admin_url"] = varstr
+            json_output = json.dumps(result)
+            return json_output
+
         data = json.loads(output)
-        routes = data.get('items', [])
-        varstr = ""
+        routes = data.get("items", [])
+
         for route in routes:
-            if f'admin.{instid}' in route['spec']['host']:
-                varstr = route['spec']['host']
+            if f"admin.{instid}" in route["spec"]["host"]:
+                varstr = route["spec"]["host"]
                 break
         if varstr != "":
-            result['admin_url'] = f'https://{varstr}'
+            result["admin_url"] = f"https://{varstr}"
         else:
             varstr = ""
-            result['admin_url'] = varstr
+            result["admin_url"] = varstr
 
         json_output = json.dumps(result)
         print(json_output)
 
     except Exception as e:
+        print(e)
         varstr = ""
-        result['admin_url'] = varstr
+        result["admin_url"] = varstr
         json_output = json.dumps(result)
         print(json_output)
 
 
-def getAdminURLManage(kube_config, instid,workspaceId):
+def getAdminURLManage(kube_config, instid, workspaceId):
     try:
-        result = {
-            "admin_url": ""
-        }
-        
-        process = subprocess.Popen(['oc', 'get', 'route',
-                                    '-n', f'mas-{instid}-manage',
-                                    '-o', 'json',
-                                    '--kubeconfig', kube_config],
-                                   stdout=subprocess.PIPE, universal_newlines=True)
+        result = {"admin_url": ""}        
+        process = subprocess.Popen(
+            [
+                "oc",
+                "get",
+                "route",
+                "-n",
+                f"mas-{instid}-manage",
+                "-o",
+                "json",
+                "--kubeconfig",
+                kube_config,
+            ],
+            stdout=subprocess.PIPE,
+            universal_newlines=True,
+        )
 
         output, _ = process.communicate()
-        
+
+        if process.returncode != 0:
+            varstr = ""
+            result["admin_url"] = varstr
+            json_output = json.dumps(result)
+            return json_output
+
         data = json.loads(output)
-        routes = data.get('items', [])
-        varstr = ""
+        routes = data.get("items", [])
+
         for route in routes:
-            if f'{workspaceId}-all.manage.{instid}' in route['spec']['host']:
-                varstr = route['spec']['host']
+            if f"{workspaceId}-all.manage.{instid}" in route["spec"]["host"]:
+                varstr = route["spec"]["host"]
                 break
 
         if varstr != "":
-            result['admin_url'] = f'https://{varstr}/maximo'
+            result["admin_url"] = f"https://{varstr}/maximo"
         else:
             varstr = ""
-            result['admin_url'] = varstr
+            result["admin_url"] = varstr
 
         json_output = json.dumps(result)
         print(json_output)
 
     except Exception as e:
+        print(e)
         varstr = ""
-        result['admin_url'] = varstr
+        result["admin_url"] = varstr
         json_output = json.dumps(result)
         print(json_output)
-
-
 
 
 if __name__ == "__main__":
@@ -90,7 +112,7 @@ if __name__ == "__main__":
     input_json = json.loads(sys.stdin.read())
 
     # get the KUBECONFIG path from the json
-    kubeconfig = input_json['KUBECONFIG']
+    kubeconfig = input_json["KUBECONFIG"]
 
     capability = sys.argv[1]
     instanceId = sys.argv[2]
@@ -99,4 +121,6 @@ if __name__ == "__main__":
     if capability == "core":
         getAdminURLCore(kube_config=kubeconfig, instid=instanceId)
     elif capability == "manage":
-        getAdminURLManage(kube_config=kubeconfig, instid=instanceId,workspaceId=workspaceId)
+        getAdminURLManage(
+            kube_config=kubeconfig, instid=instanceId, workspaceId=workspaceId
+        )
