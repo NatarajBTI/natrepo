@@ -120,7 +120,7 @@ resource "null_resource" "pipeline_verify" {
 
 provisioner "local-exec" {
     interpreter = ["/bin/bash", "-c"]
-    command     = "${path.module}/scripts/pipelineVerify.sh var.mas_instance_id}"
+    command     = "${path.module}/scripts/pipelineVerify.sh var.mas_instance_id"
 	environment = {
       KUBECONFIG = data.ibm_container_cluster_config.cluster_config.config_file_path
     }
