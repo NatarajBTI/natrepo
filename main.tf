@@ -116,6 +116,18 @@ data "external" "install_verify" {
 
 }
 
+resource "null_resource" "pipeline_verify" {
+
+provisioner "local-exec" {
+    interpreter = ["/bin/bash", "-c"]
+    command     = "${path.module}/scripts/pipelineVerify.sh var.mas_instance_id}"
+	environment = {
+      KUBECONFIG = data.ibm_container_cluster_config.cluster_config.config_file_path
+    }
+  }
+  depends_on = [data.external.install_verify]
+}
+
 #Get the maximo admin URL if the deployment is successful.
 data "external" "maximo_admin_url" {
 
@@ -123,5 +135,6 @@ data "external" "maximo_admin_url" {
   query = {
     KUBECONFIG = data.ibm_container_cluster_config.cluster_config.config_file_path
   }
-  depends_on = [data.external.install_verify]
+  depends_on = [null_resource.pipeline_verify]
+  
 }
