@@ -8,7 +8,9 @@ var1=$1
         if [[ $varstr3 == "REASON" && $varstr4 == "Completed"  ]]; then
                 break
         elif [[ $varstr3 == "REASON" && $varstr4 == "Running"  ]]; then
+                echo "Install pipeline is taking more than expected time. Something is incorrect. Please check the pipeline task status on Openshift Cluster"
                 exit
         elif [[ $varstr3 == "REASON" && $varstr4 == "Failed"  ]]; then
-                      exit
+                echo "Install pipeline has failed"
+                exit
         fi
