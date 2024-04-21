@@ -178,11 +178,9 @@ spec:
                       helm delete maximo-helm-release -n default --no-hooks               
 
                   fi
-fi                 
+             fi                
                   
-
-
-          env:
+        env:
             - name: MAS_INSTANCE_ID
               value: "{{ .Values.mas_instance_id }}"
             - name: DEPLOYMENT_FLAVOUR
