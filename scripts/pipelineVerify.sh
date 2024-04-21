@@ -1,3 +1,7 @@
+set -e
+
+for (( i=0; i<=60; i++ ));
+        do
 var1=$1
         varstr3=$(oc get pr -n mas-${var1}-pipelines | awk -F' ' '{print $3}')
         varstr3=$(echo $varstr3 | cut -d ' ' -f 1)
@@ -14,3 +18,5 @@ var1=$1
                 echo "Install pipeline has failed"
                 exit
         fi
+done
+}
