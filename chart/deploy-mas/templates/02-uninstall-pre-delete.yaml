@@ -149,8 +149,7 @@ spec:
                    else
                       echo "No MAS instance namespace found due to a failed installation"
                       helm delete maximo-helm-release -n default --no-hooks
-                   fi
-				   
+                   fi				   
              elif [ "${DEPLOYMENT_FLAVOUR}" == "manage" ]; then
                 echo "Inside helm pre-delete hook and uninstalling MAS Core + Manage instance"
                 varstr=$(oc get namespaces | grep mas-inst1-core | awk -F' ' '{print $2}')
@@ -172,7 +171,7 @@ spec:
                    fi
                       oc delete project db2u
                       sleep 600
-				           done
+		   done
                    else
                       echo "No MAS instance namespace found due to a failed installation"
                       helm delete maximo-helm-release -n default --no-hooks               
