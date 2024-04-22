@@ -19,4 +19,4 @@ var1=$1
                 exit
         fi
 done
-}
+
