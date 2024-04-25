@@ -97,7 +97,7 @@ spec:
         - name: {{ $job_name }}
           # 8.0.0-pre.master - sha256:5b5222caecdd860840fd1eb070999e29ed356310474741f76934d0a9f8921d99
           # below sha is for quay.io/ibmmas/cli:8.0.0-pre.mascore-2054 (tag 8.0.0), update it once we get a new release tag
-          image: quay.io/ibmmas/cli@sha256:72d10dba6e2da213315cd823ac4731fed3ef22d0720a5b22909ffe2b01fa8ae3
+          image: quay.io/ibmmas/cli@sha256:3400bac3bf97831cecec32a90d03220b05d2aba2c5d5f61e6d8bd6958cc69f7c
 
           imagePullPolicy: Always
           securityContext:
