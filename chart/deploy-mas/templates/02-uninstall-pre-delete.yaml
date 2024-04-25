@@ -1,4 +1,4 @@
-{{ $ns              :=  printf "mas-uninstall-pipelines" }}
+{{ $ns              :=  "mas-uninstall-pipelines" }}
 {{ $role_name       :=  "mas-undeploy-role" }}
 {{ $secret_name     :=  "mas-undeploy-secret" }}
 {{ $crole_name      :=  "mas-undeploy-crole" }}
@@ -97,7 +97,7 @@ spec:
         - name: {{ $job_name }}
           # 8.0.0-pre.master - sha256:5b5222caecdd860840fd1eb070999e29ed356310474741f76934d0a9f8921d99
           # below sha is for quay.io/ibmmas/cli:8.0.0-pre.mascore-2054 (tag 8.0.0), update it once we get a new release tag
-          image: quay.io/ibmmas/cli@sha256:2e82de3f6bf025ccbecbd9c704bca60f884c7a3cef8211690ebec1ba2ae02791
+          image: quay.io/ibmmas/cli@sha256:72d10dba6e2da213315cd823ac4731fed3ef22d0720a5b22909ffe2b01fa8ae3
 
           imagePullPolicy: Always
           securityContext:
@@ -127,59 +127,63 @@ spec:
               DEPLOYMENT_FLAVOUR=${DEPLOYMENT_FLAVOUR:-"core"}
 
               if [ "${DEPLOYMENT_FLAVOUR}" == "core" ]; then
-                echo "Inside helm pre-delete hook and uninstalling MAS Core instance"
-                varstr=$(oc get namespaces | grep mas-inst1-core | awk -F' ' '{print $2}')
-                   if [[ $varstr == "Active"  ]]; then
-                      echo "MAS instance namespace found"
-                      mas uninstall -i "${MAS_INSTANCE_ID}" --no-confirm
-                      for (( i=0; i<=15; i++ ));
-                   do
-                      varstr2=$(oc get pr -n mas-${MAS_INSTANCE_ID}-pipelines | grep uninstall | awk -F' ' '{print $3}')
-                   if [[ $varstr2 == "Completed"  ]]; then
-                      echo "Uninstall pipeline has completed successfully"
-                      break
-                   elif [[ $varstr2 == "Running"  ]]; then
-                      echo "Uninstall pipeline is still running"
-                      sleep 120
-                   elif [[ $varstr2 == "Failed"  ]]; then
-                      echo "Uninstall pipeline has failed"
-                      exit
-                   fi
-                      done
-                   else
-                      echo "No MAS instance namespace found due to a failed installation"
-                      helm delete maximo-helm-release -n default --no-hooks
-                   fi				   
-             elif [ "${DEPLOYMENT_FLAVOUR}" == "manage" ]; then
-                echo "Inside helm pre-delete hook and uninstalling MAS Core + Manage instance"
-                varstr=$(oc get namespaces | grep mas-inst1-core | awk -F' ' '{print $2}')
-                   if [[ $varstr == "Active"  ]]; then
-                      echo "MAS instance namespace found"
-                      mas uninstall -i "${MAS_INSTANCE_ID}" --no-confirm
-                      for (( i=0; i<=15; i++ ));
-                   do
-                      varstr2=$(oc get pr -n mas-${MAS_INSTANCE_ID}-pipelines | grep uninstall | awk -F' ' '{print $3}')
-                   if [[ $varstr2 == "Completed"  ]]; then
-                      echo "Uninstall pipeline has completed successfully"
-                      break
-                   elif [[ $varstr2 == "Running"  ]]; then
-                      echo "Uninstall pipeline is still running"
-                      sleep 120
-                   elif [[ $varstr2 == "Failed"  ]]; then
-                      echo "Uninstall pipeline has failed"
-                      exit
-                   fi
-                      oc delete project db2u
-                      sleep 600
-                   done
-                   else
-                      echo "No MAS instance namespace found due to a failed installation"
-                      helm delete maximo-helm-release -n default --no-hooks               
+              echo "Inside helm pre-delete hook and uninstalling MAS Core instance"
+              varstr=$(oc get namespaces | grep mas-"${MAS_INSTANCE_ID}"-core | awk -F' ' '{print $2}')
+              if [[ $varstr == "Active"  ]]; then
+              echo "MAS instance namespace found"
+              mas uninstall -i "${MAS_INSTANCE_ID}" --no-confirm
+              for (( i=0; i<=15; i++ ));
+              do
+              varstr2=$(oc get pr -n mas-${MAS_INSTANCE_ID}-pipelines | grep uninstall | awk -F' ' '{print $3}')
+              if [[ $varstr2 == "Completed"  ]]; then
+              echo "Uninstall pipeline has completed successfully"
+              break
+              elif [[ $varstr2 == "Running"  ]]; then
+              echo "Uninstall pipeline is still running"
+              sleep 120
+              elif [[ $varstr2 == "Failed"  ]]; then
+              echo "Uninstall pipeline has failed"
+              exit
+              else
+              echo "Other error condition"
+              exit
+              fi
+              done
+              else
+              echo "No MAS instance namespace found due to a failed installation"
+              fi
+              elif [ "${DEPLOYMENT_FLAVOUR}" == "manage" ]; then
+              echo "Inside helm pre-delete hook and uninstalling MAS Core + Manage instance"
+              varstr=$(oc get namespaces | grep mas-"${MAS_INSTANCE_ID}"-core | awk -F' ' '{print $2}')
+              if [[ $varstr == "Active"  ]]; then
+              echo "MAS instance namespace found"
+              mas uninstall -i "${MAS_INSTANCE_ID}" --no-confirm
+              for (( i=0; i<=15; i++ ));
+              do
+              varstr2=$(oc get pr -n mas-${MAS_INSTANCE_ID}-pipelines | grep uninstall | awk -F' ' '{print $3}')
+              if [[ $varstr2 == "Completed"  ]]; then
+              echo "Uninstall pipeline has completed successfully"
+              break
+              elif [[ $varstr2 == "Running"  ]]; then
+              echo "Uninstall pipeline is still running"
+              sleep 120
+              elif [[ $varstr2 == "Failed"  ]]; then
+              echo "Uninstall pipeline has failed"
+              exit
+              else
+              echo "Other error condition"
+              exit
+              fi
+              oc delete project db2u
+              sleep 600
+              done
+              else
+              echo "No MAS instance namespace found due to a failed installation"
+              fi
+              fi
 
-                  fi
-             fi                
-                  
-        env:
+
+          env:
             - name: MAS_INSTANCE_ID
               value: "{{ .Values.mas_instance_id }}"
             - name: DEPLOYMENT_FLAVOUR

@@ -5,7 +5,7 @@ import sys
 
 def getAdminURLCore(kube_config, instid):
     try:
-        result = {"admin_url": ""}        
+        result = {"admin_url": ""}
         process = subprocess.Popen(
             [
                 "oc",
@@ -47,8 +47,7 @@ def getAdminURLCore(kube_config, instid):
         print(json_output)
 
     except Exception as e:
-        #print(e)
-        varstr = "CaughtException"
+        varstr = f"CaughtException: {e}"
         result["admin_url"] = varstr
         json_output = json.dumps(result)
         print(json_output)
@@ -56,7 +55,7 @@ def getAdminURLCore(kube_config, instid):
 
 def getAdminURLManage(kube_config, instid, workspaceId):
     try:
-        result = {"admin_url": ""}        
+        result = {"admin_url": ""}
         process = subprocess.Popen(
             [
                 "oc",
@@ -99,8 +98,7 @@ def getAdminURLManage(kube_config, instid, workspaceId):
         print(json_output)
 
     except Exception as e:
-        #print(e)
-        varstr = "CaughtException"
+        varstr = f"CaughtException: {e}"
         result["admin_url"] = varstr
         json_output = json.dumps(result)
         print(json_output)

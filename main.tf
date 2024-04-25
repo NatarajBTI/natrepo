@@ -4,9 +4,10 @@ data "ibm_container_cluster_config" "cluster_config" {
   endpoint_type   = var.cluster_config_endpoint_type != "default" ? var.cluster_config_endpoint_type : null
 }
 
-resource "time_sleep" "wait_180_seconds" {
-  create_duration = "180s"
-  depends_on = [helm_release.maximo_helm_release]
+#Wait for Redhat Openshift Pipelines operator to get installed
+resource "time_sleep" "wait_300_seconds" {
+  create_duration = "300s"
+  depends_on      = [helm_release.maximo_helm_release]
 }
 
 #Deploy helm chart to install selected deployment offerings namely, MAS Core or MAS Core+Manage
@@ -90,12 +91,10 @@ resource "helm_release" "maximo_helm_release" {
     value = var.uds_contact_lastname
   }
 
-  name             = "maximo-helm-release"
-  chart            = "${path.module}/chart/deploy-mas"
-  create_namespace = false
-  timeout          = 1200
-  # dependency_update = true
-  # force_update      = false
+  name                       = "maximo-helm-release"
+  chart                      = "${path.module}/chart/deploy-mas"
+  create_namespace           = false
+  timeout                    = 1200
   force_update               = true
   cleanup_on_fail            = true
   wait                       = true
@@ -111,20 +110,22 @@ data "external" "install_verify" {
   query = {
     KUBECONFIG = data.ibm_container_cluster_config.cluster_config.config_file_path
   }
-depends_on = [time_sleep.wait_180_seconds]
+  depends_on = [time_sleep.wait_300_seconds]
+
 }
 
 resource "null_resource" "pipeline_verify" {
 
-provisioner "local-exec" {
+  provisioner "local-exec" {
     interpreter = ["/bin/bash", "-c"]
     command     = "${path.module}/scripts/pipelineVerify.sh ${var.mas_instance_id}"
-	environment = {
+    environment = {
       KUBECONFIG = data.ibm_container_cluster_config.cluster_config.config_file_path
     }
   }
   depends_on = [data.external.install_verify]
 }
+
 
 #Get the maximo admin URL if the deployment is successful.
 data "external" "maximo_admin_url" {
@@ -134,5 +135,4 @@ data "external" "maximo_admin_url" {
     KUBECONFIG = data.ibm_container_cluster_config.cluster_config.config_file_path
   }
   depends_on = [null_resource.pipeline_verify]
-  
 }
