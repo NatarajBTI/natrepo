@@ -15,15 +15,15 @@ resource "null_resource" "maximo_admin_url" {
 
   provisioner "local-exec" {
     interpreter = ["/bin/bash", "-c"]
-    command     = "${path.module}/scripts/testscript.sh var.deployment_flavour, var.mas_instance_id"
-    environment = {
+    command     = "${path.module}/scripts/testscript.sh ${var.deployment_flavour} ${var.mas_instance_id}"
+	environment = {
       KUBECONFIG = data.ibm_container_cluster_config.cluster_config.config_file_path
     }
   }
+  #depends_on = [null_resource.maximo_admin_url]
+  depends_on = [data.local_file.admin_url]
 }
 
 data "local_file" "admin_url" {
-  filename = local.admin_url_file
-  depends_on = [null_resource.maximo_admin_url]
+  filename = local.admin_url_file  
 }
-
