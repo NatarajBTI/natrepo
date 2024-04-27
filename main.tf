@@ -134,7 +134,7 @@ locals {
 }
 
 locals {
-  admin_url_file = "${path.module}/result.txt"
+  admin_url_file = "${path.module}/url.txt"
 }
 
 data "local_file" "admin_url" {
