@@ -5,7 +5,7 @@ data "ibm_container_cluster_config" "cluster_config" {
 }
 
 locals {
-  admin_url_file = "${path.module}/admin-url.txt"
+  admin_url_file = "${path.module}/result.txt"
 }
 
 resource "null_resource" "maximo_admin_url" {  
@@ -15,7 +15,7 @@ resource "null_resource" "maximo_admin_url" {
 
   provisioner "local-exec" {
     interpreter = ["/bin/bash", "-c"]
-    command     = "${path.module}/scripts/testscript.sh"
+    command     = "${path.module}/scripts/testscript.sh, var.deployment_flavour, var.mas_instance_id"
     environment = {
       KUBECONFIG = data.ibm_container_cluster_config.cluster_config.config_file_path
     }

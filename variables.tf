@@ -22,6 +22,22 @@ variable "region" {
   default	  = "ca=tor"
 }
 
+variable "deployment_flavour" {
+  type        = string
+  description = "Enter core for Maximo Application Suite Core deployment and enter manage for Maximo Application Suite Core+Manage deployment"
+  nullable    = false
+  validation {
+    error_message = "Invalid deployment flavour type! Valid values are 'core' or 'manage'"
+    condition     = contains(["core", "manage"], var.deployment_flavour)
+  }
+}
+
+variable "mas_instance_id" {
+  type        = string
+  description = "Enter the Maximo Application Suite instance Id"
+  nullable    = false
+}
+
 variable "cluster_config_endpoint_type" {
   description = "Specify which type of endpoint to use for for cluster config access: 'default', 'private', 'vpe', 'link'. 'default' value will use the default endpoint of the cluster."
   type        = string

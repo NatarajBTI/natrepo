@@ -4,5 +4,5 @@
 
 output "maximo_admin_url" {
   description = "Admin URL of MAS/Manage application"
-  value       = data.local_file.admin_url.content
+  value       = jsondecode(data.local_file.admin_url.content)
 }
