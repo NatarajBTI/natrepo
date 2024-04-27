@@ -9,11 +9,8 @@ locals {
 }
 
 resource "null_resource" "maximo_admin_url" {  
-  triggers = {
-    always_run = timestamp()
-  }
-
-  provisioner "local-exec" {
+  
+provisioner "local-exec" {
     interpreter = ["/bin/bash", "-c"]
     command     = "${path.module}/scripts/testscript.sh ${var.deployment_flavour} ${var.mas_instance_id}"
 	environment = {
