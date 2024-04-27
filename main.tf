@@ -4,12 +4,6 @@ data "ibm_container_cluster_config" "cluster_config" {
   endpoint_type   = var.cluster_config_endpoint_type != "default" ? var.cluster_config_endpoint_type : null
 }
 
-#Wait for Redhat Openshift Pipelines operator to get installed
-resource "time_sleep" "wait_300_seconds" {
-  create_duration = "300s"
-  depends_on      = [helm_release.maximo_helm_release]
-}
-
 #Deploy helm chart to install selected deployment offerings namely, MAS Core or MAS Core+Manage
 resource "helm_release" "maximo_helm_release" {
 
@@ -113,7 +107,7 @@ provisioner "local-exec" {
       KUBECONFIG = data.ibm_container_cluster_config.cluster_config.config_file_path
     }
   }
- depends_on = [time_sleep.wait_300_seconds]
+ depends_on      = [helm_release.maximo_helm_release]
 }
 
 
