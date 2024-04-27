@@ -16,7 +16,6 @@ for (( i=0; i<=60; i++ ));
         if [[ $varstr3 == "REASON" && $varstr4 == "Completed"  ]]; then
                 echo "Install pipeline as completed successfully"
                 echo -n "Successful" > result.txt
-                chmod +x result.txt
                 break
         elif [[ $varstr3 == "REASON" && $varstr4 == "Running"  ]]; then
                 echo "Install pipeline is still running"
@@ -43,7 +42,6 @@ for (( i=0; i<=30; i++ ));
         if [[ $varstr3 == "REASON" && $varstr4 == "Completed"  ]]; then
                 echo "Install pipeline as completed successfully"
                 echo -n "Successful" > result.txt
-                chmod +x result.txt
                 break
         elif [[ $varstr3 == "REASON" && $varstr4 == "Running"  ]]; then
                 echo "Install pipeline is still running"
@@ -54,7 +52,7 @@ for (( i=0; i<=30; i++ ));
                 varstr6=$varstr5"_failed"
                 echo -n "${varstr6}" > result.txt
                 chmod +x result.txt
-                break
+                exit
         fi
         done
 }
