@@ -38,6 +38,8 @@ for (( i=0; i<=60; i++ ));
                 break
         elif [[ $varstr3 == "REASON" && $varstr4 == "Running"  ]]; then
                 echo "Install pipeline is still running"
+                varstr5=$(oc get taskrun -A -n mas-${var2}-pipelines | grep Failed | awk -F' ' '{print $2}')
+                echo $varstr5 "task is running"
                 # If it's taking too long to complete then it's unusual behavior and looks like it's failing. Hence exit deployment after 60 retries.
                 if [[ $i == 60 ]]; then
 				echo "Pipeline is taking too long time to complete which is unusual. Please check the pipeline status on Openshift console."
@@ -90,6 +92,8 @@ for (( i=0; i<=30; i++ ));
                 break
         elif [[ $varstr3 == "REASON" && $varstr4 == "Running"  ]]; then
                 echo "Install pipeline is still running"
+                varstr5=$(oc get taskrun -A -n mas-${var2}-pipelines | grep Failed | awk -F' ' '{print $2}')
+                echo $varstr5 "task is running"
                 # If it's taking too long to complete then it's unusual behavior and looks like it's failing. Hence exit deployment after 30 retries.
                 if [[ $i == 30 ]]; then
 				echo "Pipeline is taking too long time to complete which is unusual. Please check the pipeline status on Openshift console."
