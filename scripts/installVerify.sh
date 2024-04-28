@@ -23,7 +23,7 @@ for (( i=0; i<=60; i++ ));
         elif [[ $varstr3 == "REASON" && $varstr4 == "Failed"  ]]; then
         varstr5=$(oc get taskrun -A -n mas-${var2}-pipelines | grep Failed | awk -F' ' '{print $2}')
                 echo $varstr5 "task run failed"
-                exit
+                exit 1
         fi
         done
 }
@@ -52,7 +52,7 @@ for (( i=0; i<=30; i++ ));
                 varstr6=$varstr5"_failed"
                 echo -n "${varstr6}" > result.txt
                 chmod +x result.txt
-                exit
+                exit 1
         fi
         done
 }

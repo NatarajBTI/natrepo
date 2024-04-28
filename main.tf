@@ -99,7 +99,9 @@ resource "helm_release" "maximo_helm_release" {
 
 #Verify the pipeline install status & get the the data on pipeline success status or in case of failure, get the data on failed task.
 resource "null_resource" "install_verify" {  
-  
+  triggers = {
+    always_run = timestamp()
+  }
 provisioner "local-exec" {
     interpreter = ["/bin/bash", "-c"]
     command     = "${path.module}/scripts/installVerify.sh ${var.deployment_flavour} ${var.mas_instance_id}"
@@ -112,7 +114,9 @@ provisioner "local-exec" {
 
 
 resource "null_resource" "maximo_admin_url" {  
-  
+  triggers = {
+    always_run = timestamp()
+  }
 provisioner "local-exec" {
     interpreter = ["/bin/bash", "-c"]
     command     = "${path.module}/scripts/getAdminURL.sh ${var.deployment_flavour} ${var.mas_instance_id}"
