@@ -16,7 +16,7 @@ for (( i=0; i<=10; i++ ));
                 echo "Install pipeline has started succesfully"
 			break
 		else
-		    if [[ $i == 3 ]]; then
+		    if [[ $i == 10 ]]; then
 				echo "Pipeline didn't start after waiting for more than 10 minutes. Something wrong. Please check on Openshift cluster."
 				exit 1
 			fi
@@ -68,7 +68,7 @@ for (( i=0; i<=10; i++ ));
                 echo "Install pipeline has started succesfully"
 			break
 		else
-		    if [[ $i == 3 ]]; then
+		    if [[ $i == 10 ]]; then
 				echo "Pipeline didn't start after waiting for more than 10 minutes. Something wrong. Please check on Openshift cluster."
 				exit 1
 			fi
