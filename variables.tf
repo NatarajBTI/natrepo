@@ -22,25 +22,6 @@ variable "region" {
   default     = "ca-tor"
 }
 
-variable "mas_entitlement_key" {
-  description = "Enter entitlement key to access Maximo Application Suite Image registry"
-  type        = string
-  sensitive   = true
-}
-
-variable "mas_license" {
-  description = "Enter Maximo Application Suite License file content"
-  type        = string
-  sensitive   = true
-}
-
-variable "sls_license_id" {
-  type        = string
-  description = "Enter Suite License Server license ID"
-  sensitive   = true
-  nullable    = false
-}
-
 variable "deployment_flavour" {
   type        = string
   description = "Enter core for Maximo Application Suite Core deployment and enter manage for Maximo Application Suite Core+Manage deployment"
@@ -56,62 +37,6 @@ variable "mas_instance_id" {
   type        = string
   description = "Enter the Maximo Application Suite instance Id"
   nullable    = false
-}
-
-# tflint-ignore: terraform_unused_declarations
-variable "mas_workspace_id" {
-  type        = string
-  description = "Enter the Maximo Application Suite workspace Id"
-  default     = "wrkid1"
-}
-# tflint-ignore: terraform_unused_declarations
-variable "mas_workspace_name" {
-  type        = string
-  description = "Enter the Maximo Application Suite workspace name"
-  default     = "wrkns1"
-}
-
-# tflint-ignore: terraform_unused_declarations
-variable "storage_class_rwo" {
-  type        = string
-  description = "Enter the storage class (read-write once)"
-  default     = "ibmc-vpc-block-retain-10iops-tier"
-}
-
-# tflint-ignore: terraform_unused_declarations
-variable "storage_class_rwx" {
-  type        = string
-  description = "Enter the storage class (read-write many). Enter file storage class for DB2."
-  default     = "ibmc-vpc-file-dp2"
-}
-
-# tflint-ignore: terraform_unused_declarations
-variable "pipeline_storage_class" {
-  type        = string
-  description = "Enter the storage class for pipeline"
-  default     = "ibmc-vpc-block-retain-10iops-tier"
-
-}
-
-variable "uds_contact_email" {
-  type        = string
-  description = "Enter the email ID for Data Reporter Operator"
-  nullable    = false
-  default     = "nataraj.s@in.ibm.com"
-}
-
-variable "uds_contact_firstname" {
-  type        = string
-  description = "Enter your first name to be used in Data Reporter Operator"
-  nullable    = false
-  default     = "Nataraj"
-}
-
-variable "uds_contact_lastname" {
-  type        = string
-  description = "Enter your last name to be used in Data Reporter Operator"
-  nullable    = false
-  default     = "S"
 }
 
 variable "cluster_config_endpoint_type" {
