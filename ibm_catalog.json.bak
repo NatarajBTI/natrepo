@@ -2,7 +2,7 @@
     "products": [
       {
         "name": "deploy-arch-ibm-slz-mas",
-        "label": "Maximo Application Suite",
+        "label": "IBM Maximo Application Suite on IBM Cloud landing zone",
         "product_kind": "solution",
         "tags": [
           "ibm_created",
