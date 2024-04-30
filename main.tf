@@ -103,8 +103,7 @@ resource "null_resource" "install_verify" {
     always_run = timestamp()
   }
 provisioner "local-exec" {
-    interpreter = ["python3"]
-    command     = "${path.module}/scripts/installVerify.py, var.deployment_flavour, var.mas_instance_id"
+    command     = "python3 ${path.module}/scripts/installVerify.py ${var.deployment_flavour} ${var.mas_instance_id}"
 	environment = {
       KUBECONFIG = data.ibm_container_cluster_config.cluster_config.config_file_path
     }
@@ -117,9 +116,8 @@ resource "null_resource" "maximo_admin_url" {
   triggers = {
     always_run = timestamp()
   }
-provisioner "local-exec" {
-    interpreter = ["python3"]
-    command     = "${path.module}/scripts/getAdminURL.py, var.mas_instance_id"
+provisioner "local-exec" {    
+    command     = "python3 ${path.module}/scripts/getAdminURL.py ${var.mas_instance_id}"
 	environment = {
       KUBECONFIG = data.ibm_container_cluster_config.cluster_config.config_file_path
     }
