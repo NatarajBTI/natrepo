@@ -10,7 +10,7 @@
           "terraform",
           "reference_architecture",
           "solution",
-		      "enterprise_app"
+	  "enterprise_app"
         ],
         "keywords": [
           "Enterprise Asset Management",
