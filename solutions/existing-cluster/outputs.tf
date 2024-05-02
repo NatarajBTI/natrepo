@@ -1,8 +1,8 @@
 ########################################################################################################################
-# Provider config
+# Outputs
 ########################################################################################################################
 
-provider "ibm" {
-  ibmcloud_api_key = var.ibmcloud_api_key
-  region           = var.region
+output "maximo_admin_url" {
+  description = "Admin URL of MAS/Manage application is"
+  value       = module.existing_cluster.maximo_admin_url
 }

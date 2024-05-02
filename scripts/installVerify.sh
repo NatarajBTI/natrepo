@@ -1,125 +1,52 @@
+#!/bin/bash
+
 set -e
 
-# Function to track the status of MAS Core+Manage pipeline and to exit in case of failure and to wait for all retries in case if the pipeline is still running.
-function verifyPipelineStatusManage()
-{
+deployment_flavour=$1
+instance_id=$2
 
-for (( i=0; i<=10; i++ ));
-        do
-        varstr3=$(oc get pr -n mas-${var2}-pipelines | awk -F' ' '{print $3}')
-        varstr3=$(echo $varstr3 | cut -d ' ' -f 1)
+echo "Deployment flavour is: ${deployment_flavour}"
+echo "Instance ID is: ${instance_id}"
+echo
 
-        varstr4=$(oc get pr -n mas-${var2}-pipelines | awk -F' ' '{print $3}')
-        varstr4=$(echo $varstr4 | cut -d ' ' -f 2)
+# sleep for 30 seconds to allow some tasks to start
+sleep 30
 
-        if [[ $varstr3 == "REASON" && $varstr4 == "Running"  ]]; then
-                echo "Install pipeline has started succesfully"
-			break
-		else
-		    if [[ $i == 10 ]]; then
-				echo "Pipeline didn't start after waiting for more than 10 minutes. Something wrong. Please check on Openshift cluster."
-				exit 1
-			fi
-			sleep 60
-		fi
-		done
+namespace="mas-${instance_id}-pipelines"
 
-for (( i=0; i<=60; i++ ));
-        do
-        varstr3=$(oc get pr -n mas-${var2}-pipelines | awk -F' ' '{print $3}')
-        varstr3=$(echo $varstr3 | cut -d ' ' -f 1)
-
-        varstr4=$(oc get pr -n mas-${var2}-pipelines | awk -F' ' '{print $3}')
-        varstr4=$(echo $varstr4 | cut -d ' ' -f 2)
-
-        if [[ $varstr3 == "REASON" && $varstr4 == "Completed"  ]]; then
-                echo "Install pipeline has completed successfully"
-                echo -n "Successful" > result.txt
-                break
-        elif [[ $varstr3 == "REASON" && $varstr4 == "Running"  ]]; then
-                echo "Install pipeline is still running"
-                varstr5=$(oc get taskrun -A -n mas-${var2}-pipelines | grep Failed | awk -F' ' '{print $2}')
-                echo $varstr5 "task is running"
-                # If it's taking too long to complete then it's unusual behavior and looks like it's failing. Hence exit deployment after 60 retries.
-                if [[ $i == 60 ]]; then
-				echo "Pipeline is taking too long time to complete which is unusual. Please check the pipeline status on Openshift console."
-				exit 1
-				fi
-                sleep 300
-        elif [[ $varstr3 == "REASON" && $varstr4 == "Failed"  ]]; then
-        varstr5=$(oc get taskrun -A -n mas-${var2}-pipelines | grep Failed | awk -F' ' '{print $2}')
-                echo $varstr5 "task run failed"
-                exit 1
-        fi
-        done
-}
-
-# Function to track the status of MAS Core pipeline and to exit in case of failure and to wait for all retries in case if the pipeline is still running.
-function verifyPipelineStatusCore()
-{
-
-for (( i=0; i<=10; i++ ));
-        do
-        varstr3=$(oc get pr -n mas-${var2}-pipelines | awk -F' ' '{print $3}')
-        varstr3=$(echo $varstr3 | cut -d ' ' -f 1)
-
-        varstr4=$(oc get pr -n mas-${var2}-pipelines | awk -F' ' '{print $3}')
-        varstr4=$(echo $varstr4 | cut -d ' ' -f 2)
-
-        if [[ $varstr3 == "REASON" && $varstr4 == "Running"  ]]; then
-                echo "Install pipeline has started succesfully"
-			break
-		else
-		    if [[ $i == 10 ]]; then
-				echo "Pipeline didn't start after waiting for more than 10 minutes. Something wrong. Please check on Openshift cluster."
-				exit 1
-			fi
-			sleep 60
-		fi
-		done
-
-for (( i=0; i<=30; i++ ));
-        do
-        varstr3=$(oc get pr -n mas-${var2}-pipelines | awk -F' ' '{print $3}')
-        varstr3=$(echo $varstr3 | cut -d ' ' -f 1)
-
-        varstr4=$(oc get pr -n mas-${var2}-pipelines | awk -F' ' '{print $3}')
-        varstr4=$(echo $varstr4 | cut -d ' ' -f 2)
-
-        if [[ $varstr3 == "REASON" && $varstr4 == "Completed"  ]]; then
-                echo "Install pipeline as completed successfully"
-                echo -n "Successful" > result.txt
-                break
-        elif [[ $varstr3 == "REASON" && $varstr4 == "Running"  ]]; then
-                echo "Install pipeline is still running"
-                varstr5=$(oc get taskrun -A -n mas-${var2}-pipelines | grep Failed | awk -F' ' '{print $2}')
-                echo $varstr5 "task is running"
-                # If it's taking too long to complete then it's unusual behavior and looks like it's failing. Hence exit deployment after 30 retries.
-                if [[ $i == 30 ]]; then
-				echo "Pipeline is taking too long time to complete which is unusual. Please check the pipeline status on Openshift console."
-				exit 1
-				fi
-                sleep 180
-        elif [[ $varstr3 == "REASON" && $varstr4 == "Failed"  ]]; then
-        varstr5=$(oc get taskrun -A -n mas-${var2}-pipelines | grep Failed | awk -F' ' '{print $2}')
-                echo $varstr5 "task run failed"
-                varstr6=$varstr5"_failed"
-                echo -n "${varstr6}" > result.txt
-                chmod +x result.txt
-                exit 1
-        fi
-        done
-}
-var1=$1
-var2=$2
-echo "Deployment flavour is:" $1
-echo "Instance Id is:" $2
-
-if [[ $var1 == "core" ]]; then
-verifyPipelineStatusCore
-elif [[ $var1 == "manage" ]]; then
-verifyPipelineStatusManage
+if [[ "${deployment_flavour}" == "core" ]]; then
+  num_of_retries=90
+elif [[ "${deployment_flavour}" == "manage" ]]; then
+  num_of_retries=200
 else
-echo "Invalid deployment flavour option is inputted"
-exit 1
+  echo "Unsupported deployment flavour: ${deployment_flavour}"
+  exit 1
 fi
+
+for (( i=0; i<=num_of_retries; i++ )); do
+  reason=$(oc get pr -n "${namespace}" -o=jsonpath='{.items[*].status.conditions[*].reason}')
+  if [[ "${reason}" == "Completed"  ]]; then
+    echo "Install pipeline has completed successfully"
+    break
+  elif [[ "${reason}" == "Running"  ]]; then
+    echo "Install pipeline is still running.."
+    running_tasks=$(oc get taskrun -n "${namespace}" | grep Running | awk -F' ' '{print $1}')
+    printf 'Current running task(s) are:\n%s\n' "${running_tasks}"
+    # If it's taking too long to complete then it's unusual behavior and looks like it's failing. Hence exit deployment after 30 retries.
+    if [[ $i == "${num_of_retries}" ]]; then
+      echo
+      echo "Pipeline is taking too long time to complete which is unusual. Please check the pipeline status in the Openshift console."
+      exit 1
+    fi
+    time_sleep=60
+    echo
+    echo "Sleeping for ${time_sleep} seconds before retrying.."
+    sleep ${time_sleep}
+  elif [[ "${reason}" == "Failed"  ]]; then
+    failed_tasks=$(oc get taskrun -n "${namespace}" | grep Failed | awk -F' ' '{print $1}')
+    echo
+    printf 'Detected the following failed task(s):\n%s\n' "${failed_tasks}"
+    echo "Exiting."
+    exit 1
+  fi
+done

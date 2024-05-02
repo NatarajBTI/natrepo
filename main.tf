@@ -4,22 +4,22 @@ data "ibm_container_cluster_config" "cluster_config" {
   endpoint_type   = var.cluster_config_endpoint_type != "default" ? var.cluster_config_endpoint_type : null
 }
 
-#Deploy helm chart to install selected deployment offerings namely, MAS Core or MAS Core+Manage
+# Deploy helm chart to install selected deployment offerings namely, MAS Core or MAS Core+Manage
 resource "helm_release" "maximo_helm_release" {
 
-  set {
+  set_sensitive {
     name  = "mas_entitlement_key"
     type  = "string"
     value = base64encode(var.mas_entitlement_key)
   }
 
-  set {
+  set_sensitive {
     name  = "mas_license"
     type  = "string"
     value = base64encode(var.mas_license)
   }
 
-  set {
+  set_sensitive {
     name  = "sls_license_id"
     type  = "string"
     value = var.sls_license_id
@@ -94,53 +94,45 @@ resource "helm_release" "maximo_helm_release" {
   wait                       = true
   recreate_pods              = true
   disable_openapi_validation = false
+  wait_for_jobs              = true
 
-}
-
-#Verify the pipeline install status & get the the data on pipeline success status or in case of failure, get the data on failed task.
-resource "null_resource" "install_verify" {  
-  triggers = {
-    always_run = timestamp()
-  }
-provisioner "local-exec" {
-    interpreter = ["/bin/bash", "-c"]
-    command     = "${path.module}/scripts/installVerify.sh ${var.deployment_flavour} ${var.mas_instance_id}"
-	environment = {
-      KUBECONFIG = data.ibm_container_cluster_config.cluster_config.config_file_path
-    }
-  }
- depends_on      = [helm_release.maximo_helm_release]
-}
-
-
-resource "null_resource" "maximo_admin_url" {  
-  triggers = {
-    always_run = timestamp()
-  }
-provisioner "local-exec" {
-    interpreter = ["/bin/bash", "-c"]
-    command     = "${path.module}/scripts/getAdminURL.sh ${var.deployment_flavour} ${var.mas_instance_id}"
-	environment = {
-      KUBECONFIG = data.ibm_container_cluster_config.cluster_config.config_file_path
-    }
-  }
-  depends_on = [null_resource.install_verify]
-}
-
-locals {
-  pipeline_status_file = "${path.module}/result.txt"
 }
 
 locals {
   admin_url_file = "${path.module}/url.txt"
 }
 
-data "local_file" "admin_url" {
-  depends_on = [null_resource.maximo_admin_url]
-  filename = local.admin_url_file  
+# Verify the pipeline install status & get the the data on pipeline success status or in case of failure, get the data on failed task.
+resource "null_resource" "install_verify" {
+  triggers = {
+    always_run = timestamp()
+  }
+  provisioner "local-exec" {
+    interpreter = ["/bin/bash", "-c"]
+    command     = "${path.module}/scripts/installVerify.sh ${var.deployment_flavour} ${var.mas_instance_id}"
+    environment = {
+      KUBECONFIG = data.ibm_container_cluster_config.cluster_config.config_file_path
+    }
+  }
+  depends_on = [helm_release.maximo_helm_release]
 }
 
-data "local_file" "pipeline_status" {
+
+resource "null_resource" "maximo_admin_url" {
+  triggers = {
+    always_run = timestamp()
+  }
+  provisioner "local-exec" {
+    interpreter = ["/bin/bash", "-c"]
+    command     = "${path.module}/scripts/getAdminURL.sh ${var.mas_instance_id} ${local.admin_url_file}"
+    environment = {
+      KUBECONFIG = data.ibm_container_cluster_config.cluster_config.config_file_path
+    }
+  }
+  depends_on = [null_resource.install_verify]
+}
+
+data "local_file" "admin_url" {
   depends_on = [null_resource.maximo_admin_url]
-  filename = local.pipeline_status_file 
+  filename   = local.admin_url_file
 }
