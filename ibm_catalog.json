@@ -65,19 +65,6 @@
                 "version": ">=v3.0.0"
               }
             ],
-			 {
-              "custom_config": {
-                "config_constraints": {
-                  "generationType": "2"
-                },
-                "grouping": "deployment",
-                "original_grouping": "deployment",
-                "type": "vpc_region"
-              },
-              "key": "region",
-              "required": true,
-              "type": "string"
-            },
             "architecture": {
               "descriptions": "",
               "features": [
