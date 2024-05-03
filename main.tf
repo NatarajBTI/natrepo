@@ -8,9 +8,9 @@ data "ibm_container_cluster_config" "cluster_config" {
 resource "helm_release" "maximo_helm_release" {
 
   set_sensitive {
-    name  = "mas_entitlement_key"
+    name  = "entitlement_key"
     type  = "string"
-    value = base64encode(var.mas_entitlement_key)
+    value = base64encode(var.entitlement_key)
   }
 
   set_sensitive {
