@@ -117,9 +117,9 @@ No modules.
 | <a name="input_sls_license_id"></a> [sls\_license\_id](#input\_sls\_license\_id) | Enter Suite License Server license ID | `string` | n/a | yes |
 | <a name="input_storage_class_rwo"></a> [storage\_class\_rwo](#input\_storage\_class\_rwo) | Enter the storage class (read-write once). Default value is ibmc-vpc-block-retain-10iops-tier. Make sure this storage class is present under Storage > StorageClasses section on your Red Hat OpenShift cluster section. | `string` | `"ibmc-vpc-block-retain-10iops-tier"` | no |
 | <a name="input_storage_class_rwx"></a> [storage\_class\_rwx](#input\_storage\_class\_rwx) | Enter the storage class (read-write many). Enter file storage class for DB2. Default value is ibmc-vpc-block-retain-10iops-tier. Make sure this storage class is present under Storage > StorageClasses section on your Red Hat OpenShift cluster section. | `string` | `"ibmc-vpc-block-retain-10iops-tier"` | no |
-| <a name="input_uds_contact_email"></a> [uds\_contact\_email](#input\_uds\_contact\_email) | Enter the email ID for Data Reporter Operator | `string` | n/a | yes |
-| <a name="input_uds_contact_firstname"></a> [uds\_contact\_firstname](#input\_uds\_contact\_firstname) | Enter your first name to be used in Data Reporter Operator | `string` | n/a | yes |
-| <a name="input_uds_contact_lastname"></a> [uds\_contact\_lastname](#input\_uds\_contact\_lastname) | Enter your last name to be used in Data Reporter Operator | `string` | n/a | yes |
+| <a name="input_contact_email"></a> [contact\_email](#input\_contact\_email) | Enter the email ID for Data Reporter Operator | `string` | n/a | yes |
+| <a name="input_contact_firstname"></a> [contact\_firstname](#input\_contact\_firstname) | Enter your first name to be used in Data Reporter Operator | `string` | n/a | yes |
+| <a name="input_contact_lastname"></a> [contact\_lastname](#input\_contact\_lastname) | Enter your last name to be used in Data Reporter Operator | `string` | n/a | yes |
 
 ### Outputs
 

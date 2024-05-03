@@ -74,19 +74,19 @@ variable "pipeline_storage_class" {
 
 }
 
-variable "uds_contact_email" {
+variable "contact_email" {
   type        = string
   description = "Enter the email ID for Data Reporter Operator"
   nullable    = false
 }
 
-variable "uds_contact_firstname" {
+variable "contact_firstname" {
   type        = string
   description = "Enter your first name to be used in Data Reporter Operator"
   nullable    = false
 }
 
-variable "uds_contact_lastname" {
+variable "contact_lastname" {
   type        = string
   description = "Enter your last name to be used in Data Reporter Operator"
   nullable    = false
