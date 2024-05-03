@@ -65,6 +65,14 @@
                 "version": ">=v3.0.0"
               }
             ],
+			"iam_permissions": [            
+            {
+              "role_crns": [
+                "crn:v1:bluemix:public:iam::::role:Administrator"
+              ],
+              "service_name": "iam-identity"
+            }
+          ],
             "architecture": {
               "descriptions": "",
               "features": [
