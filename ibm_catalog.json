@@ -68,6 +68,14 @@
 			"release_notes_url": "https://test.cloud.ibm.com/docs-draft/maximo-application-suite?topic=maximo-application-suite-release-notes",
 			"configuration": [
             {
+			  "custom_config": {
+                "config_constraints": {
+                  "generationType": "2"
+                },
+                "grouping": "deployment",
+                "original_grouping": "deployment",
+                "type": "deployment_flavour"
+              },				
               "key": "deployment_flavour",
               "type": "string",
               "required": true,              
