@@ -2,17 +2,7 @@
 # Outputs
 ########################################################################################################################
 
-output "cos_instance_id" {
-  description = "COS instance id"
-  value       = ibm_resource_instance.cos_instance.id
-}
-
-output "resource_group_name" {
-  description = "Resource group name"
-  value       = module.resource_group.resource_group_name
-}
-
-output "resource_group_id" {
-  description = "Resource group ID"
-  value       = module.resource_group.resource_group_id
+output "maximo_admin_url" {
+  description = "Admin URL of MAS/Manage application is"
+  value       = module.mas_core.maximo_admin_url
 }

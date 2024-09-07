@@ -3,6 +3,6 @@
 ########################################################################################################################
 
 output "maximo_admin_url" {
-  description = "Admin URL of MAS/Manage application"
-  value       = data.local_file.admin_url.content
+  description = "Admin URL of MAS/Manage application is"
+  value       = module.existing_cluster.maximo_admin_url
 }

@@ -2,9 +2,21 @@
 # Input Variables
 ##############################################################################
 
+variable "ibmcloud_api_key" {
+  description = "Enter the IBM Cloud APIkey that's associated with this IBM Cloud account"
+  type        = string
+  sensitive   = true
+}
+
 variable "cluster_id" {
   type        = string
-  description = "Enter Id of the target IBM Cloud Red Hat OpenShift cluster. This cluster ID can be found under the Red Hat OpenShift clusters section."
+  description = "Enter Id of the target IBM Cloud Red Hat OpenShift Cluster"
+  nullable    = false
+}
+
+variable "region" {
+  type        = string
+  description = "Enter region of the target IBM Cloud Red Hat OpenShift Cluster"
   nullable    = false
 }
 
@@ -43,9 +55,10 @@ variable "mas_instance_id" {
   nullable    = false
 }
 
+
 variable "mas_workspace_id" {
   type        = string
-  description = "Enter the Maximo Application Suite workspace Id."
+  description = "Enter the Maximo Application Suite workspace Id"
   default     = "wrkid1"
 }
 
@@ -54,6 +67,7 @@ variable "mas_workspace_name" {
   description = "Enter the Maximo Application Suite workspace name"
   default     = "wrkns1"
 }
+
 
 variable "storage_class_rwo" {
   type        = string

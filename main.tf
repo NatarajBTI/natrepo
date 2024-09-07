@@ -4,35 +4,31 @@ data "ibm_container_cluster_config" "cluster_config" {
   endpoint_type   = var.cluster_config_endpoint_type != "default" ? var.cluster_config_endpoint_type : null
 }
 
-resource "time_sleep" "wait_300_seconds" {
-  create_duration = "100s"
-  depends_on = [helm_release.maximo_operator_catalog]
-}
+# Deploy helm chart to install selected deployment offerings namely, MAS Core or MAS Core+Manage
+resource "helm_release" "maximo_helm_release" {
 
-resource "helm_release" "maximo_operator_catalog" {
-
-  set {
-    name  = "mas_entitlement_key"
+  set_sensitive {
+    name  = "entitlement_key"
     type  = "string"
-    value = base64encode(var.mas_entitlement_key)
+    value = base64encode(var.entitlement_key)
   }
 
-  set {
+  set_sensitive {
     name  = "mas_license"
     type  = "string"
     value = base64encode(var.mas_license)
   }
 
- set {
+  set_sensitive {
     name  = "sls_license_id"
     type  = "string"
     value = var.sls_license_id
   }
 
   set {
-    name  = "deployment_flavour"
+    name  = "deployment_flavor"
     type  = "string"
-    value = var.deployment_flavour
+    value = var.deployment_flavor
   }
 
   set {
@@ -52,78 +48,91 @@ resource "helm_release" "maximo_operator_catalog" {
     type  = "string"
     value = var.mas_workspace_name
   }
-	
+
   set {
-    name  = "uds_contact_email"
+    name  = "storage_class_rwo"
     type  = "string"
-    value = var.uds_contact_email
+    value = var.storage_class_rwo
   }
 
   set {
-    name  = "uds_contact_firstname"
+    name  = "storage_class_rwx"
     type  = "string"
-    value = var.uds_contact_firstname
+    value = var.storage_class_rwx
   }
 
   set {
-    name  = "uds_contact_lastname"
+    name  = "pipeline_storage_class"
     type  = "string"
-    value = var.uds_contact_lastname
+    value = var.pipeline_storage_class
   }
-  
-   name             = "maximo-operator-catalog-helm-release"
-  chart            = "${path.module}/chart/deploy-mas"
-  create_namespace = false
-  timeout          = 300
-  # dependency_update = true
-  # force_update      = false
+
+  set {
+    name  = "contact_email"
+    type  = "string"
+    value = var.contact_email
+  }
+
+  set {
+    name  = "contact_firstname"
+    type  = "string"
+    value = var.contact_firstname
+  }
+
+  set {
+    name  = "contact_lastname"
+    type  = "string"
+    value = var.contact_lastname
+  }
+
+  name                       = "maximo-helm-release"
+  chart                      = "${path.module}/chart/deploy-mas"
+  create_namespace           = false
+  timeout                    = 1200
   force_update               = true
   cleanup_on_fail            = true
   wait                       = true
   recreate_pods              = true
   disable_openapi_validation = false
-
+  wait_for_jobs              = true
 
 }
 
-resource "null_resource" "install_verify" {
+locals {
+  admin_url_file = "${path.module}/url.txt"
+}
 
-provisioner "local-exec" {
+# Verify the pipeline install status & get the the data on pipeline success status or in case of failure, get the data on failed task.
+resource "null_resource" "install_verify" {
+  triggers = {
+    always_run = timestamp()
+  }
+  provisioner "local-exec" {
     interpreter = ["/bin/bash", "-c"]
-    command     = "${path.module}/scripts/installVerify.sh ${var.deployment_flavour} ${var.mas_instance_id}"
-	environment = {
+    command     = "${path.module}/scripts/installVerify.sh ${var.deployment_flavor} ${var.mas_instance_id}"
+    environment = {
       KUBECONFIG = data.ibm_container_cluster_config.cluster_config.config_file_path
     }
   }
-  depends_on = [time_sleep.wait_300_seconds]
+  depends_on = [helm_release.maximo_helm_release]
 }
 
-resource "null_resource" "admin_url" {
 
-provisioner "local-exec" {
+resource "null_resource" "maximo_admin_url" {
+  triggers = {
+    always_run = timestamp()
+  }
+  provisioner "local-exec" {
     interpreter = ["/bin/bash", "-c"]
-    command     = "${path.module}/scripts/getAdminURL.sh ${var.deployment_flavour} ${var.mas_instance_id} ${var.mas_workspace_id}"
-	environment = {
+    command     = "${path.module}/scripts/getAdminURL.sh ${var.mas_instance_id} ${local.admin_url_file}"
+    environment = {
       KUBECONFIG = data.ibm_container_cluster_config.cluster_config.config_file_path
     }
   }
   depends_on = [null_resource.install_verify]
 }
 
-data "external" "get_pipeline_result" {
-
-  program    = ["/bin/bash", "-c", "${path.module}/scripts/getResult.sh"]
-  query = {
-    KUBECONFIG   = data.ibm_container_cluster_config.cluster_config.config_file_path
-  }
-depends_on = [null_resource.install_verify]
-}
-
-data "external" "get_admin_url" {
-
-  program    = ["/bin/bash", "-c", "${path.module}/scripts/getURL.sh"]
-  query = {
-    KUBECONFIG   = data.ibm_container_cluster_config.cluster_config.config_file_path
-  }
-depends_on = [null_resource.admin_url]
+data "local_file" "admin_url" {
+  depends_on = [null_resource.maximo_admin_url]
+  filename   = local.admin_url_file
 }
