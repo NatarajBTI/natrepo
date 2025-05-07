@@ -7,4 +7,6 @@ db2_registry:
 
 rds_params:
   AUTO_REORG: "ON"
-  MAX_LOG: "512"
+  SELF_TUNING_MEM: "ON"
+  CATALOGCACHE_SZ: "800"
+  CHNGPGS_THRESH: "40"
