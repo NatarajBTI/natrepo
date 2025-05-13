@@ -8,7 +8,7 @@ db2_registry:
 rds_params:
   AUTO_REORG: "ON"
   SELF_TUNING_MEM: "ON"
-  SELF_TUNING_MEM2: "ON"
+  ssl_svcename: "50001"
   CATALOGCACHE_SZ: "800"
   CHNGPGS_THRESH: "40"
   AUTO_MAINT: "ON"
