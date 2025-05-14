@@ -4,6 +4,7 @@ db2_registry:
   DB2_MINIMIZE_LISTPREFETCH: "Y"
   DB2_EVALUNCOMMITTED: "YES"
   DB2_SKIPDELETED: "ON"
+  DB2_Test: "ON"
 
 rds_params:
   AUTO_REORG: "ON"
