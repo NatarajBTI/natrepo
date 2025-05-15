@@ -22,3 +22,18 @@ rds_params:
   UTIL_HEAP_SZ: "10000"
   AUTO_STMT_STATS: "OFF"
   STMT_CONC: "LITERALS"
+
+other_commands:
+  - db2 "call rdsadmin.create_bufferpool('maximo9x', 'MAXBUFPOOL', 4096, 'Y', 'Y', 32768)"
+  - db2 "call rdsadmin.create_tablespace('maximo9x', 'MAXDATA', 'MAXBUFPOOL', 32768, 5000, NULL, NULL)"
+  - db2 "call rdsadmin.create_tablespace('maximo9x', 'MAXTEMP', 'MAXBUFPOOL', 32768, NULL, NULL, 'T')"
+  - db2 "call rdsadmin.create_tablespace('maximo9x', 'MAXINDEX', 'MAXBUFPOOL', 32768, 5000, NULL, NULL)"
+  - db2 "call rdsadmin.add_user('maximo', 'db2passw0rd', NULL)"
+  - db2 "call rdsadmin.dbadm_grant(?, 'maximo9x', 'DBADM', 'USER maximo')"
+  - db2 "call rdsadmin.dbadm_grant(?, 'MAXDATA', 'DBADM', 'USER maximo')"
+
+schema_commands:
+  - db2 create schema maximo
+  - db2 GRANT CREATEIN,DROPIN,ALTERIN ON SCHEMA MAXIMO TO USER MAXIMO
+  - db2 GRANT USE OF TABLESPACE MAXDATA TO USER MAXIMO
+  - db2 grant connect, bindadd, createtab, implicit_schema on database to User MAXIMO
