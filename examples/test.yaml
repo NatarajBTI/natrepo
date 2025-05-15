@@ -29,7 +29,8 @@ other_commands:
   - db2 "call rdsadmin.add_user('maximo', 'db2passw0rd', NULL)"
   - db2 "call rdsadmin.dbadm_grant(?, 'maximo9x', 'DBADM', 'USER maximo')"
   - db2 "call rdsadmin.dbadm_grant(?, 'MAXDATA', 'DBADM', 'USER maximo')"
-  - db2 connect to rdsdb2 user dbinst1 using password
+
+schema_commands:
   - db2 create schema maximo
   - db2 GRANT CREATEIN,DROPIN,ALTERIN ON SCHEMA MAXIMO TO USER MAXIMO
   - db2 GRANT USE OF TABLESPACE MAXDATA TO USER MAXIMO
