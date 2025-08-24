@@ -12,7 +12,7 @@ resource "helm_release" "maximo_helm_release" {
     type  = "string"
     value = base64encode(var.entitlement_key)
   }
-
+# Test comment
   set_sensitive {
     name  = "mas_license"
     type  = "string"
