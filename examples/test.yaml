@@ -20,7 +20,7 @@ rds_params:
   UTIL_HEAP_SZ: "10000"
   AUTO_STMT_STATS: "OFF"
   STMT_CONC: "LITERALS"
-
+#Adding a comment here..
 other_commands:
   - db2 "call rdsadmin.create_bufferpool('maximo9x', 'MAXBUFPOOL', 4096, 'Y', 'Y', 32768)"
   - db2 "call rdsadmin.create_tablespace('maximo9x', 'MAXDATA', 'MAXBUFPOOL', 32768, 5000, NULL, NULL)"
